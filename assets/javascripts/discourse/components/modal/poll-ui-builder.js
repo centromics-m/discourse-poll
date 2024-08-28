@@ -387,6 +387,12 @@ export default class PollUiBuilderModal extends Component {
   }
 
   @action
+  checkOption(option) {
+
+    this.pollOptions.checked=option;
+  }
+
+  @action
   updatePollType(pollType, event) {
     event?.preventDefault();
     this.set("pollType", pollType);
