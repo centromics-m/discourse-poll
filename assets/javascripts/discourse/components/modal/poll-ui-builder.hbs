@@ -45,9 +45,7 @@
                   @action={{fn this.removeOption option}}
                 />
               {{/if}}
-              <input
-                type="checkbox"
-                />
+              <input type="checkbox" checked={{option.correct}} {{on "change" (fn this.updateOptionCorrect option)}}  />
             </div>
           {{/each}}
 

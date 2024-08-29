@@ -25,7 +25,7 @@ export default class PollUiBuilderModal extends Component {
   showAdvanced = false;
   pollType = REGULAR_POLL_TYPE;
   pollTitle;
-  pollOptions = [EmberObject.create({ value: "" })];
+  pollOptions = [EmberObject.create({ value: "", correct: false})];
   pollOptionsText = "";
   pollMin = 1;
   pollMax = 2;
@@ -140,7 +140,7 @@ export default class PollUiBuilderModal extends Component {
     "pollStep",
     "pollGroups",
     "pollAutoClose",
-    "chartType"
+    "chartType",
   )
   pollOutput(
     pollType,
@@ -207,7 +207,11 @@ export default class PollUiBuilderModal extends Component {
     if (pollOptions.length > 0 && pollType !== NUMBER_POLL_TYPE) {
       pollOptions.forEach((option) => {
         if (option.value.length > 0) {
-          output += `* ${option.value.trim()}\n`;
+          output += `* ${option.value.trim()}`;
+          if(option.correct) {
+            output += ' [correct]';
+         }
+         output +="\n";
         }
       });
     }
@@ -387,9 +391,15 @@ export default class PollUiBuilderModal extends Component {
   }
 
   @action
-  checkOption(option) {
+  updateOptionCorrect(option, event) {
+    console.log(option);
+    if(event.target.checked) {
+      option.set("correct", true);
+    } else {
+      option.set("correct", false);
+    }
 
-    this.pollOptions.checked=option;
+    console.log(this.pollOptions);
   }
 
   @action
