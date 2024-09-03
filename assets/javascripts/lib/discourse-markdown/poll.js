@@ -15,6 +15,7 @@ const ALLOWED_ATTRIBUTES = [
   "results",
   "status",
   "step",
+  "score",
   "type",
 ];
 

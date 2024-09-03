@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PollOptionSerializer < ApplicationSerializer
-  attributes :id, :html, :votes
+  attributes :id, :correct, :html, :votes
 
   def id
     object.digest

@@ -454,6 +454,7 @@ class DiscoursePoll::Poll
         max: poll["max"],
         step: poll["step"],
         chart_type: poll["charttype"] || "bar",
+        score:  poll["score"],
         groups: poll["groups"],
       )
 

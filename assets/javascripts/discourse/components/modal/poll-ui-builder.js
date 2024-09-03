@@ -33,6 +33,8 @@ export default class PollUiBuilderModal extends Component {
   pollGroups;
   pollAutoClose;
   pollResult = ALWAYS_POLL_RESULT;
+  score = 100;
+  defaultScore = [0,100,200,300,400,500];
   chartType = BAR_CHART_TYPE;
   publicPoll = this.siteSettings.poll_default_public;
 
@@ -140,6 +142,7 @@ export default class PollUiBuilderModal extends Component {
     "pollStep",
     "pollGroups",
     "pollAutoClose",
+    "score",
     "chartType",
   )
   pollOutput(
@@ -153,6 +156,7 @@ export default class PollUiBuilderModal extends Component {
     pollStep,
     pollGroups,
     pollAutoClose,
+    score,
     chartType
   ) {
     let pollHeader = "[poll";
@@ -197,12 +201,18 @@ export default class PollUiBuilderModal extends Component {
       pollHeader += ` close=${pollAutoClose.toISOString()}`;
     }
 
+    if (score) {
+      pollHeader += ` score=${score}`;
+    }
+
     pollHeader += "]";
     output += `${pollHeader}\n`;
 
     if (pollTitle) {
       output += `# ${pollTitle.trim()}\n`;
     }
+
+
 
     if (pollOptions.length > 0 && pollType !== NUMBER_POLL_TYPE) {
       pollOptions.forEach((option) => {
@@ -392,14 +402,16 @@ export default class PollUiBuilderModal extends Component {
 
   @action
   updateOptionCorrect(option, event) {
-    console.log(option);
     if(event.target.checked) {
       option.set("correct", true);
     } else {
       option.set("correct", false);
     }
+  }
 
-    console.log(this.pollOptions);
+  @action
+  updateScore(event) {
+    this.set('score', event.target.value);
   }
 
   @action
