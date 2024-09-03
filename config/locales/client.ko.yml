@@ -99,6 +99,8 @@ ko:
           label: 투표한 사람 보기
         poll_title:
           label: 제목 (선택 사항)
+        poll_score :
+          label : 점수 (선택 사항)
         poll_options:
           label: 옵션 (한 줄에 하나씩)
           add: 옵션 추가
