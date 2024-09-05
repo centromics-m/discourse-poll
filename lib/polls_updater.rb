@@ -91,6 +91,7 @@ module DiscoursePoll
               new_poll_options.each do |option|
                 ::PollOption.create!(
                   poll: old_poll,
+                  correct: option["correct"],
                   digest: option["id"],
                   html: option["html"].strip,
                   anonymous_votes: anonymous_votes[option["id"]],

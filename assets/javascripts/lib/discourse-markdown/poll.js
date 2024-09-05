@@ -199,6 +199,7 @@ export function setup(helper) {
     "div.poll-info_counts",
     "div.poll-info",
     "div.poll-title",
+    "div.poll-score",
     "div.poll",
     "div[data-*]",
     "li[data-*]",
