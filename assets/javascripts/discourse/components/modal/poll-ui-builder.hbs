@@ -13,15 +13,21 @@
         <Input @value={{this.pollTitle}} />
       </div>
       <div class="input-group poll-score">
-            <label class="input-group-label">{{i18n
-                "poll.ui_builder.poll_score.label"
-              }}</label>
-            <select class="combo-box form-kit__control-select" {{on 'change' this.updateScore}}>
-              {{#each this.defaultScore as |defaultScore|}}
-                <option value="{{defaultScore}}">{{defaultScore}}</option>
-              {{/each}}
-             </select>
-          </div>
+        <label class="input-group-label">{{i18n
+            "poll.ui_builder.poll_score.label"
+          }}</label>
+        <select
+          id="poll-score-select"
+          class="combo-box form-kit__control-select"
+          value={{this.score}} data-value={{this.score}}
+          {{on "change" this.updateScore}}
+        >
+          {{#each this.defaultScore as |defaultScore|}}
+            <option value={{defaultScore}} selected={{eq defaultScore @value}}>
+              {{defaultScore}}</option>
+          {{/each}}
+        </select>
+      </div>
     {{/if}}
 
     {{#unless this.isNumber}}
@@ -55,7 +61,11 @@
                   @action={{fn this.removeOption option}}
                 />
               {{/if}}
-              <input type="checkbox" checked={{option.correct}} {{on "change" (fn this.updateOptionCorrect option)}}  />
+              <input
+                type="checkbox"
+                checked={{option.correct}}
+                {{on "change" (fn this.updateOptionCorrect option)}}
+              />
             </div>
           {{/each}}
 

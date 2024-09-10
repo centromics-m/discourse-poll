@@ -365,6 +365,11 @@ export default class PollUiBuilderModal extends Component {
         "pollOptionsText",
         this.pollOptions.map((x) => x.value).join("\n")
       );
+
+      // 자동으로 안되서 강제 설정
+      setTimeout(() => {
+        this._restorePollScoreOptionSelection();
+      }, 150);
     }
   }
 
@@ -411,7 +416,16 @@ export default class PollUiBuilderModal extends Component {
 
   @action
   updateScore(event) {
+    //event?.preventDefault();
     this.set('score', event.target.value);
+  }
+
+  // 자동으로 안되서 강제로 설정
+  _restorePollScoreOptionSelection() {
+    const el = document.querySelector('#poll-score-select');
+    if(el) {
+      el.querySelector(`option[value="${this.score}"]`).selected = true;
+    }
   }
 
   @action
