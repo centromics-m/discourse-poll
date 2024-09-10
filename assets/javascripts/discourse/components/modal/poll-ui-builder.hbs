@@ -16,7 +16,7 @@
             <label class="input-group-label">{{i18n
                 "poll.ui_builder.poll_score.label"
               }}</label>
-            <select {{on 'change' this.updateScore}}>
+            <select class="combo-box form-kit__control-select" {{on 'change' this.updateScore}}>
               {{#each this.defaultScore as |defaultScore|}}
                 <option value="{{defaultScore}}">{{defaultScore}}</option>
               {{/each}}
