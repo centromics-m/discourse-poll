@@ -454,12 +454,14 @@ class DiscoursePoll::Poll
         max: poll["max"],
         step: poll["step"],
         chart_type: poll["charttype"] || "bar",
+        score:  poll["score"],
         groups: poll["groups"],
       )
 
     poll["options"].each do |option|
       PollOption.create!(
         poll: created_poll,
+        correct: option["correct"],
         digest: option["id"].presence,
         html: option["html"].presence&.strip,
       )
@@ -499,7 +501,14 @@ class DiscoursePoll::Poll
           .css("li[#{DiscoursePoll::DATA_PREFIX}option-id]")
           .each do |o|
             option_id = o.attributes[DiscoursePoll::DATA_PREFIX + "option-id"].value.to_s
-            poll["options"] << { "id" => option_id, "html" => o.inner_html.strip }
+            html=o.inner_html.strip.to_s
+
+            correct=false
+            if html.include?"[correct]"
+              html=html.sub("[correct]", "")
+              correct=true
+            end
+            poll["options"] << { "id" => option_id, "html" => html, "correct"=>correct }
           end
 
         # title

@@ -25,7 +25,7 @@ export default class PollUiBuilderModal extends Component {
   showAdvanced = false;
   pollType = REGULAR_POLL_TYPE;
   pollTitle;
-  pollOptions = [EmberObject.create({ value: "" })];
+  pollOptions = [EmberObject.create({ value: "", correct: false})];
   pollOptionsText = "";
   pollMin = 1;
   pollMax = 2;
@@ -33,6 +33,8 @@ export default class PollUiBuilderModal extends Component {
   pollGroups;
   pollAutoClose;
   pollResult = ALWAYS_POLL_RESULT;
+  score = 100;
+  defaultScore = [0,100,200,300,400,500];
   chartType = BAR_CHART_TYPE;
   publicPoll = this.siteSettings.poll_default_public;
 
@@ -140,7 +142,8 @@ export default class PollUiBuilderModal extends Component {
     "pollStep",
     "pollGroups",
     "pollAutoClose",
-    "chartType"
+    "score",
+    "chartType",
   )
   pollOutput(
     pollType,
@@ -153,6 +156,7 @@ export default class PollUiBuilderModal extends Component {
     pollStep,
     pollGroups,
     pollAutoClose,
+    score,
     chartType
   ) {
     let pollHeader = "[poll";
@@ -197,6 +201,10 @@ export default class PollUiBuilderModal extends Component {
       pollHeader += ` close=${pollAutoClose.toISOString()}`;
     }
 
+    if (score) {
+      pollHeader += ` score=${score}`;
+    }
+
     pollHeader += "]";
     output += `${pollHeader}\n`;
 
@@ -204,10 +212,16 @@ export default class PollUiBuilderModal extends Component {
       output += `# ${pollTitle.trim()}\n`;
     }
 
+
+
     if (pollOptions.length > 0 && pollType !== NUMBER_POLL_TYPE) {
       pollOptions.forEach((option) => {
         if (option.value.length > 0) {
-          output += `* ${option.value.trim()}\n`;
+          output += `* ${option.value.trim()}`;
+          if(option.correct) {
+            output += ' [correct]';
+         }
+         output +="\n";
         }
       });
     }
@@ -351,6 +365,11 @@ export default class PollUiBuilderModal extends Component {
         "pollOptionsText",
         this.pollOptions.map((x) => x.value).join("\n")
       );
+
+      // 자동으로 안되서 강제 설정
+      setTimeout(() => {
+        this._restorePollScoreOptionSelection();
+      }, 150);
     }
   }
 
@@ -384,6 +403,29 @@ export default class PollUiBuilderModal extends Component {
   @action
   removeOption(option) {
     this.pollOptions.removeObject(option);
+  }
+
+  @action
+  updateOptionCorrect(option, event) {
+    if(event.target.checked) {
+      option.set("correct", true);
+    } else {
+      option.set("correct", false);
+    }
+  }
+
+  @action
+  updateScore(event) {
+    //event?.preventDefault();
+    this.set('score', event.target.value);
+  }
+
+  // 자동으로 안되서 강제로 설정
+  _restorePollScoreOptionSelection() {
+    const el = document.querySelector('#poll-score-select');
+    if(el) {
+      el.querySelector(`option[value="${this.score}"]`).selected = true;
+    }
   }
 
   @action

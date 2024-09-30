@@ -17,10 +17,15 @@ class PollSerializer < ApplicationSerializer
              :chart_type,
              :groups,
              :title,
+             :score,
              :ranked_choice_outcome
 
   def public
     true
+  end
+
+  def score
+    object.score
   end
 
   def include_public?

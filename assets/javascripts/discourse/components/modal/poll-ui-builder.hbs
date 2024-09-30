@@ -5,63 +5,28 @@
   class="poll-ui-builder"
 >
   <:body>
-    <ul class="nav nav-pills poll-type">
-      <li>
-        <DButton
-          @action={{fn this.updatePollType "regular"}}
-          class={{concatClass
-            "poll-type-value poll-type-value-regular"
-            (if this.isRegular "active")
-          }}
-        >
-          {{i18n "poll.ui_builder.poll_type.regular"}}
-        </DButton>
-      </li>
-      <li>
-        <DButton
-          @action={{fn this.updatePollType "multiple"}}
-          class={{concatClass
-            "poll-type-value poll-type-value-multiple"
-            (if this.isMultiple "active")
-          }}
-        >
-          {{i18n "poll.ui_builder.poll_type.multiple"}}
-        </DButton>
-      </li>
-      {{#if this.showNumber}}
-        <li>
-          <DButton
-            @action={{fn this.updatePollType "number"}}
-            class={{concatClass
-              "poll-type-value poll-type-value-number"
-              (if this.isNumber "active")
-            }}
-          >
-            {{i18n "poll.ui_builder.poll_type.number"}}
-          </DButton>
-        </li>
-      {{/if}}
-      {{#if this.showRankedChoice}}
-        <li>
-          <DButton
-            @action={{fn this.updatePollType "ranked_choice"}}
-            class={{concatClass
-              "poll-type-value poll-type-value-ranked-choice"
-              (if this.isRankedChoice "active")
-            }}
-          >
-            {{i18n "poll.ui_builder.poll_type.ranked_choice"}}
-          </DButton>
-        </li>
-      {{/if}}
-    </ul>
-
     {{#if this.showAdvanced}}
       <div class="input-group poll-title">
         <label class="input-group-label">{{i18n
             "poll.ui_builder.poll_title.label"
           }}</label>
         <Input @value={{this.pollTitle}} />
+      </div>
+      <div class="input-group poll-score">
+        <label class="input-group-label">{{i18n
+            "poll.ui_builder.poll_score.label"
+          }}</label>
+        <select
+          id="poll-score-select"
+          class="combo-box form-kit__control-select"
+          value={{this.score}} data-value={{this.score}}
+          {{on "change" this.updateScore}}
+        >
+          {{#each this.defaultScore as |defaultScore|}}
+            <option value={{defaultScore}} selected={{eq defaultScore @value}}>
+              {{defaultScore}}</option>
+          {{/each}}
+        </select>
       </div>
     {{/if}}
 
@@ -96,6 +61,11 @@
                   @action={{fn this.removeOption option}}
                 />
               {{/if}}
+              <input
+                type="checkbox"
+                checked={{option.correct}}
+                {{on "change" (fn this.updateOptionCorrect option)}}
+              />
             </div>
           {{/each}}
 
