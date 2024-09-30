@@ -106,3 +106,9 @@ ko:
           label: 설문 조사 자동 종료
         show_advanced: "고급 옵션 표시"
         hide_advanced: "고급 옵션 숨기기"
+      admin:
+        title: "투표관리"
+        name: "제목"
+        period: "기간"
+        cta: "먼저 투표를 생성하세요"
+        none: "생성된 투표가 없습니다"

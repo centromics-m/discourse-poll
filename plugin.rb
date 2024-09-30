@@ -14,7 +14,6 @@ register_asset "stylesheets/common/poll-breakdown.scss"
 register_svg_icon "far fa-check-square"
 
 enabled_site_setting :poll_enabled
-hide_plugin
 
 after_initialize do
   module ::DiscoursePoll
@@ -31,6 +30,11 @@ after_initialize do
     class Error < StandardError
     end
   end
+
+  add_admin_route(
+    "poll.admin.title",
+    "polls"
+  )
 
   require_relative "app/controllers/polls_controller"
   require_relative "app/models/poll_option"
@@ -53,6 +57,7 @@ after_initialize do
     put "/toggle_status" => "polls#toggle_status"
     get "/voters" => "polls#voters"
     get "/grouped_poll_results" => "polls#grouped_poll_results"
+    get "/poll_list" => "polls#poll_list"
   end
 
   Discourse::Application.routes.append { mount ::DiscoursePoll::Engine, at: "/polls" }

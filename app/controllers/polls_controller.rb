@@ -5,6 +5,11 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
   before_action :ensure_logged_in, except: %i[voters grouped_poll_results]
 
+  def poll_list
+    @polls = Poll.all
+    render :json => @polls, each_serializer: PollSerializer
+  end
+
   def vote
     post_id = params.require(:post_id)
     poll_name = params.require(:poll_name)

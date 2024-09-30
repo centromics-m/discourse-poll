@@ -1,0 +1,49 @@
+<div class="discourse-polls admin-detail">
+  <div class="polls">
+    {{#if @model}}
+      <table>
+        <thead>
+        <th>{{i18n "poll.admin.name"}}</th>
+        <th>{{i18n "poll.admin.period"}}</th>
+        <th></th>
+        </thead>
+
+        <tbody>
+        {{#each @model.polls as |poll|}}
+          <tr id={{concat "poll-admin__row-" poll.id}}>
+            <td>
+                {{poll.title}}
+            </td>
+            <td>
+              {{poll.public}}
+            </td>
+            <td style="width: 120px">
+              <div class="poll-admin__listitem-action">
+                {{i18n "poll.admin.edit"}}
+
+                <DButton
+                  class="btn-small poll-admin__delete btn-danger"
+                  @icon="trash-alt"
+                  @title="poll.admin.delete"
+                  @action={{action "destroyPoll" poll}}
+                />
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      {{#unless creatingNew}}
+        <div class="admin-plugin-config-area__empty-list">
+          {{i18n "poll.admin.none"}}
+          <DButton
+            @label="poll.admin.cta"
+            class="btn-default btn-small poll-admin__cta-new"
+            @action={{action (mut creatingNew) true}}
+          />
+        </div>
+      {{/unless}}
+    {{/if}}
+  </div>
+</div>
