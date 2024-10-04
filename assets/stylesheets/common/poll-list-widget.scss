@@ -1,0 +1,28 @@
+.poll-widget-list {
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid var(--primary-low);
+  display: grid;
+  grid-template-areas: "poll" "info" "buttons";
+  @include breakpoint("mobile-extra-large", min-width) {
+    grid-template-columns: 1fr 10em;
+    grid-template-areas: "poll info" "buttons buttons";
+  }
+  background-color: #eee;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      padding: 0.2em 0;
+      word-break: break-word;
+      button {
+        background-color: var(--secondary);
+        border: none;
+        text-align: left;
+        padding-left: 23px;
+        text-indent: -23px;
+      }
+    }
+  }
+}

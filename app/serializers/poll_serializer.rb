@@ -18,7 +18,10 @@ class PollSerializer < ApplicationSerializer
              :groups,
              :title,
              :score,
-             :ranked_choice_outcome
+             :ranked_choice_outcome,
+             :post_id,
+             :post_url,
+             :post_topic_title
 
   def public
     true
@@ -88,5 +91,13 @@ class PollSerializer < ApplicationSerializer
 
   def ranked_choice_outcome
     DiscoursePoll::RankedChoice.outcome(object.id)
+  end
+
+  def post_url
+    object.post.url
+  end
+
+  def post_topic_title
+    object.post&.topic&.title
   end
 end
