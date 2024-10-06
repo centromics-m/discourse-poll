@@ -1,5 +1,5 @@
 .poll-widget-list {
-  margin: 1em 0;
+  margin: 1em 0 2em;
   padding: 1em;
   border: 1px solid var(--primary-low);
   display: grid;
@@ -8,7 +8,7 @@
     grid-template-columns: 1fr 10em;
     grid-template-areas: "poll info" "buttons buttons";
   }
-  background-color: #eee;
+  background-color: var(--tertiary-very-low) !important;
   ul {
     list-style: none;
     margin: 0;
