@@ -37,3 +37,6 @@ plugins:
   poll_default_public:
     default: true
     client: true
+  poll_show_in_frontpage:
+    default: true
+    client: true

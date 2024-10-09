@@ -15,6 +15,7 @@ register_asset "stylesheets/common/poll-list-widget.scss"
 register_svg_icon "far fa-check-square"
 
 enabled_site_setting :poll_enabled
+enabled_site_setting :poll_show_in_frontpage
 
 after_initialize do
   module ::DiscoursePoll

@@ -21,7 +21,9 @@ class PollSerializer < ApplicationSerializer
              :ranked_choice_outcome,
              :post_id,
              :post_url,
-             :post_topic_title
+             :post_topic_title,
+             :created_at,
+             :updated_at
 
   def public
     true

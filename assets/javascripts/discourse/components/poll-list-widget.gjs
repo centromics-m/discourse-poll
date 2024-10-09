@@ -11,6 +11,7 @@ export default class PollListWidgetComponent extends Component {
   @tracked inFrontpage = false;
   @service router;
   @service pollsService;
+  @service siteSettings;
 
   // Fetch and update polls
   get getPolls() {
@@ -21,10 +22,17 @@ export default class PollListWidgetComponent extends Component {
   fetchPolls(element) {
     this.getPolls.then((result) => {
       let polls = result.polls.filter((poll) => poll.status === "open");
-      this.polls = polls;
+      polls = polls.map ((poll) => {
+        return {
+          ...poll,
+          created_date: new Date(poll.created_at).toISOString().slice(0, 10),
+          post_topic_title_truncated: this._truncateString(poll.post_topic_title, 45),
+        };
+      });
       if (polls.length > 0) {
         this.poll = polls[0];
       }
+      this.polls = polls;
       console.log('Fetched polls:', polls);
     });
   }
@@ -34,15 +42,26 @@ export default class PollListWidgetComponent extends Component {
       this.router.currentRouteName === 'index';
   }
 
+  get showInFrontend() {
+    return this.isFrontpage && this.siteSettings.poll_show_in_frontpage;
+  }
+
+  _truncateString(str, len = 40) {
+    if (str.length > len) {
+      return str.slice(0, len) + "...";
+    }
+    return str;
+  }
+
   <template>
-    {{#if this.isFrontpage}}
+    {{#if this.showInFrontend}}
     <div class="poll-widget-list" {{didInsert this.fetchPolls}}>
       <h3>Active polls</h3>
       <br>
       {{#if this.polls.length}}
         <ul>
           {{#each this.polls as |poll|}}
-            <li>Poll: <a href="{{poll.post_url}}">{{poll.post_topic_title}} - {{poll.title}}</a></li>
+            <li>[{{poll.created_date}}] <a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}} - {{poll.title}}</a></li>
           {{/each}}
         </ul>
       {{else}}
@@ -51,5 +70,4 @@ export default class PollListWidgetComponent extends Component {
     </div>
     {{/if}}
   </template>
-
 }
