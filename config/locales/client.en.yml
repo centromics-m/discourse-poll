@@ -109,6 +109,9 @@ en:
       error_while_fetching_voters: "Sorry, there was an error displaying the voters."
       error_while_exporting_results: "Sorry, there was an error exporting poll results."
 
+      poll_show_in_frontpage:
+        label: "Show in frontpage"
+
       ui_builder:
         title: Build Poll
         insert: Insert Poll

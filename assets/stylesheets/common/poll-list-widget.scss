@@ -4,10 +4,10 @@
   border: 1px solid var(--primary-low);
   display: grid;
   grid-template-areas: "poll" "info" "buttons";
-  @include breakpoint("mobile-extra-large", min-width) {
-    grid-template-columns: 1fr 10em;
-    grid-template-areas: "poll info" "buttons buttons";
-  }
+  // @include breakpoint("mobile-extra-large", min-width) {
+  //   grid-template-columns: 1fr 10em;
+  //   grid-template-areas: "poll info" "buttons buttons";
+  // }
   background-color: var(--tertiary-very-low) !important;
   ul {
     list-style: none;
