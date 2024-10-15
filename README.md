@@ -4,7 +4,7 @@
 ## Installation
 
 1. docker   
-  Edit container/app.yml
+  edit container/app.yml
 ``` dockerfile
 hooks:
 after_code:
@@ -15,7 +15,7 @@ after_code:
 - git clone -b develop https://github.com/centromics-m/discourse-poll.git poll
 ```
 
-2. Source
+2. source
 
 ``` shell
 $ cd $home/plugins

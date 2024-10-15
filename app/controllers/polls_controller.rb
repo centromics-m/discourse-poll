@@ -5,6 +5,18 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
   before_action :ensure_logged_in, except: %i[voters grouped_poll_results]
 
+  def poll_main
+    # 요청을 새로 만듭니다.
+    session = ActionDispatch::Integration::Session.new(Rails.application)
+
+    # GET 요청을 보내고, 그 응답을 문자열로 저장
+    session.get Discourse.base_uri
+    response_body = session.response.body
+
+    open(Rails.root.join('public','index.html').to_s, 'w') do |file|
+      file.write(response_body)
+    end
+  end
   def poll_list
     @polls = Poll.all
     render :json => @polls, each_serializer: PollSerializer

@@ -60,6 +60,7 @@ after_initialize do
     get "/voters" => "polls#voters"
     get "/grouped_poll_results" => "polls#grouped_poll_results"
     get "/poll_list" => "polls#poll_list"
+    get "/poll_main" => "polls#poll_main"
   end
 
   Discourse::Application.routes.append { mount ::DiscoursePoll::Engine, at: "/polls" }
