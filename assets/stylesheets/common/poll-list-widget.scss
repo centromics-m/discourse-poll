@@ -51,15 +51,13 @@ body {
   h2 {
     font-size: 3.56rem;
     line-height: 110%;
-    margin-top: -60px;
-    margin-left: 4rem;
-
+    font-size: 3.56rem;
+    line-height: 110%;
+    margin: 1.78rem 0 1.424rem 0;
+    margin-top: -50px;
+    margin-left: 3rem;
     display: block;
-    font-size: 1.5em;
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    font-size: 2em;
     font-weight: bold;
   }
 }
@@ -68,23 +66,28 @@ body {
   background: #fff;
   border: 8px solid #000;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 22px;
+  height: 22px;
   display: inline-block;
   content: "";
   margin-left: 1rem;
   position: relative;
   z-index: 1;
-  left: -40px;
+  left: -31px;
 }
+
+.last-item {
+  padding-top: 80px;
+  height: 35px;
+  position: relative;
+}
+
 
 .item {
   padding-top: 100px;
   min-height: 150px;
   position: relative;
 }
-
-
 
 .card-panel {
   transition: box-shadow .25s;
@@ -96,7 +99,7 @@ body {
 
 .item .card-panel {
   margin: 0;
-  margin: 2rem 0 0 3rem;
+  margin: 2rem 0 0 1.5rem;
 }
 
 .vertical-line {

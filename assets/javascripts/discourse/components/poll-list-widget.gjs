@@ -53,6 +53,7 @@ export default class PollListWidgetComponent extends Component {
     return str;
   }
 
+
   <template>
     {{#if this.showInFrontend}}
     <div id="poll-main" {{didInsert this.fetchPolls}}>
@@ -60,7 +61,7 @@ export default class PollListWidgetComponent extends Component {
       <section>
       {{#if this.polls.length}}
           {{#each this.polls as |poll index|}}
-          <article class="item">
+        <article class="item">
             <i class="vertical-line"></i>
             <h2 class="item-date">{{poll.created_date}}</h2>
             <div class="card-panel">
@@ -68,6 +69,9 @@ export default class PollListWidgetComponent extends Component {
             </div>
           </article>
           {{/each}}
+        <div class="last-item">
+          <i class="vertical-line"></i>
+        </div>
       {{else}}
         <p>{{i18n "poll.admin.none"}}</p>
       {{/if}}
