@@ -161,4 +161,5 @@ en:
         period: "period"
         edit: "edit"
         cta: "먼저 투표를 생성하세요"
-        none: "생성된 투표가 없습니다"
+        none: "none"
+        expectation: "expectation"

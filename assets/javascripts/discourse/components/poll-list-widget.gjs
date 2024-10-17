@@ -55,18 +55,23 @@ export default class PollListWidgetComponent extends Component {
 
   <template>
     {{#if this.showInFrontend}}
-    <div class="poll-widget-list" {{didInsert this.fetchPolls}}>
-      <h3>Active polls</h3>
-      <br>
+    <div id="poll-main" {{didInsert this.fetchPolls}}>
+      <h1 class="cv-title"><span class="black white-text">{{i18n "poll.admin.expectation"}}</span></h1>
+      <section>
       {{#if this.polls.length}}
-        <ul>
-          {{#each this.polls as |poll|}}
-            <li>[{{poll.created_date}}] <a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}} - {{poll.title}}</a></li>
+          {{#each this.polls as |poll index|}}
+          <article class="item">
+            <i class="vertical-line"></i>
+            <h2 class="item-date">{{poll.created_date}}</h2>
+            <div class="card-panel">
+              <h3 class="card-title"><a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}} - {{poll.title}}</a></h3>
+            </div>
+          </article>
           {{/each}}
-        </ul>
       {{else}}
         <p>{{i18n "poll.admin.none"}}</p>
       {{/if}}
+      </section>
     </div>
     {{/if}}
   </template>

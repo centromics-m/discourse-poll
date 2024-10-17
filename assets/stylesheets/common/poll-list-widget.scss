@@ -1,14 +1,12 @@
 .poll-widget-list {
   margin: 1em 0 2em;
   padding: 1em;
-  border: 1px solid var(--primary-low);
   display: grid;
   grid-template-areas: "poll" "info" "buttons";
   // @include breakpoint("mobile-extra-large", min-width) {
   //   grid-template-columns: 1fr 10em;
   //   grid-template-areas: "poll info" "buttons buttons";
   // }
-  background-color: var(--tertiary-very-low) !important;
   ul {
     list-style: none;
     margin: 0;
@@ -25,4 +23,101 @@
       }
     }
   }
+}
+
+body {
+  background-color: rgb(32 38 46/var(--tw-bg-opacity));
+}
+
+#poll-main {
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  color: rgba(0,0,0,0.87);
+
+  div {display: block}
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald',sans-serif;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: 4.2rem;
+    line-height: 110%;
+    margin: 2.1rem 0 1.68rem 0;
+  }
+
+  h2 {
+    font-size: 3.56rem;
+    line-height: 110%;
+    margin-top: -60px;
+    margin-left: 4rem;
+
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+}
+
+.item:before, .last-item:after {
+  background: #fff;
+  border: 8px solid #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  content: "";
+  margin-left: 1rem;
+  position: relative;
+  z-index: 1;
+  left: -40px;
+}
+
+.item {
+  padding-top: 100px;
+  min-height: 150px;
+  position: relative;
+}
+
+
+
+.card-panel {
+  transition: box-shadow .25s;
+  padding: 24px;
+  margin: .5rem 0 1rem 0;
+  border-radius: 2px;
+  background-color: #fff;
+}
+
+.item .card-panel {
+  margin: 0;
+  margin: 2rem 0 0 3rem;
+}
+
+.vertical-line {
+  width: 8px;
+  background-color: #000;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.cv-title span {
+  padding: 1rem;
+}
+.white-text {
+  color: #fff !important;
+}
+.black {
+  background-color: #000 !important;
+}
+
+.card-panel  {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
 }

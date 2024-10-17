@@ -451,6 +451,10 @@ div.poll-outer {
   }
 }
 
+.navigation-topics .list-controls, .navigation-topics .list-container {
+  display:none;
+}
+
 // hides 0 vote count in crawler and print view
 body.crawler {
   .poll {
