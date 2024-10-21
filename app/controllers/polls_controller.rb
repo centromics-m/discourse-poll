@@ -3,7 +3,7 @@
 class DiscoursePoll::PollsController < ::ApplicationController
   requires_plugin DiscoursePoll::PLUGIN_NAME
 
-  before_action :ensure_logged_in, except: %i[voters grouped_poll_results]
+  before_action :ensure_logged_in, except: %i[voters poll_list grouped_poll_results]
 
   def poll_list
     @polls = Poll.all

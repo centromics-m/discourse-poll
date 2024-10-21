@@ -21,7 +21,7 @@ export default class PollListWidgetComponent extends Component {
   @action
   fetchPolls(element) {
     this.getPolls.then((result) => {
-      let polls = result.polls.filter((poll) => poll.status === "open");
+      let polls = result.polls.filter((poll) => poll.public === true);
       polls = polls.map ((poll) => {
         return {
           ...poll,

@@ -3,37 +3,14 @@
   padding: 1em;
   display: grid;
   grid-template-areas: "poll" "info" "buttons";
-  // @include breakpoint("mobile-extra-large", min-width) {
-  //   grid-template-columns: 1fr 10em;
-  //   grid-template-areas: "poll info" "buttons buttons";
-  // }
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    li {
-      padding: 0.2em 0;
-      word-break: break-word;
-      button {
-        background-color: var(--secondary);
-        border: none;
-        text-align: left;
-        padding-left: 23px;
-        text-indent: -23px;
-      }
-    }
-  }
 }
 
-body {
-  background-color: rgb(32 38 46/var(--tw-bg-opacity));
-}
 
 #poll-main {
   line-height: 1.5;
   font-family: "Roboto", sans-serif;
   font-weight: normal;
-  color: rgba(0,0,0,0.87);
+
 
   div {display: block}
 
@@ -64,7 +41,7 @@ body {
 
 .item:before, .last-item:after {
   background: #fff;
-  border: 8px solid #000;
+  border: 8px solid var(--primary);
   border-radius: 50%;
   width: 22px;
   height: 22px;
@@ -104,7 +81,7 @@ body {
 
 .vertical-line {
   width: 8px;
-  background-color: #000;
+  background-color: var(--primary);
   position: absolute;
   left: 0;
   top: 0;
@@ -115,12 +92,25 @@ body {
   padding: 1rem;
 }
 .white-text {
-  color: #fff !important;
+  color: var(--secondary);
 }
 .black {
-  background-color: #000 !important;
+  background-color:  var(--primary)
 }
 
 .card-panel  {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+@import "common/foundation/variables";
+
+
+@media (prefers-color-scheme: dark) {
+  .card-panel {
+    background-color: #666;
+  }
+
+  .item:before, .last-item:after {
+    background-color: #333;
+  }
 }
