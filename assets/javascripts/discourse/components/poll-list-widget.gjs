@@ -69,7 +69,7 @@ export default class PollListWidgetComponent extends Component {
               <ul class="nav">
                 <li class="active"><a href="">{{i18n "poll.admin.tab_overview"}}</a></li>
                 <li><a href="">{{i18n "poll.admin.tab_data"}}</a></li>
-                <li><a href="">{{i18n "poll.admin.tab_discussion"}}</a></li>
+                <li><a href="{{poll.post_url}}">{{i18n "poll.admin.tab_discussion"}}</a></li>
                 <li><a href="">{{i18n "poll.admin.tab_leaderboard"}}</a></li>
               </ul>
               <div>
