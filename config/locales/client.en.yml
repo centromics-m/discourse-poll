@@ -163,3 +163,7 @@ en:
         cta: "먼저 투표를 생성하세요"
         none: "none"
         expectation: "expectation"
+        tab_overview: "overview"
+        tab_data: "data"
+        tab_discussion: "discussion"
+        tab_leaderboard: "leaderboard"

@@ -22,7 +22,7 @@
   h1 {
     font-size: 4.2rem;
     line-height: 110%;
-    margin: 2rem 0 1.5rem 0;
+    margin: 2rem 0 1.2rem 0;
   }
 
   h2 {
@@ -64,6 +64,23 @@
   padding-top: 100px;
   min-height: 150px;
   position: relative;
+}
+
+.item ul.nav li {
+  display: inline-block;
+}
+
+.item ul.nav li a {
+  display: block;
+  padding: .5rem 1rem;
+}
+
+.item ul.nav li.active {
+  border-bottom: 3px solid var(--primary);
+}
+
+.item ul.nav {
+  border-bottom: 1px solid #666;
 }
 
 .card-panel {

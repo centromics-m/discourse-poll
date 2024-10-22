@@ -63,10 +63,16 @@ export default class PollListWidgetComponent extends Component {
           {{#each this.polls as |poll index|}}
         <article class="item">
             <i class="vertical-line"></i>
-            <h2 class="item-date">{{poll.created_date}}</h2>
+            <h2 class="item-date">{{poll.post_topic_title_truncated}} {{if poll.title poll.title}}</h2>
             <div class="card-panel">
-              <h3 class="card-title"><a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}} - {{poll.title}}</a></h3>
+              <h3 class="card-title"><a href="{{poll.post_url}}"> {{poll.created_date}}</a></h3>
             </div>
+          <ul class="nav">
+            <li class="active"><a href="">{{i18n "poll.admin.tab_overview"}}</a></li>
+            <li><a href="">{{i18n "poll.admin.tab_data"}}</a></li>
+            <li><a href="">{{i18n "poll.admin.tab_discussion"}}</a></li>
+            <li><a href="">{{i18n "poll.admin.tab_leaderboard"}}</a></li>
+          </ul>
           </article>
           {{/each}}
         <div class="last-item">

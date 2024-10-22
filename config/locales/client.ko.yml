@@ -120,3 +120,7 @@ ko:
         cta: "먼저 투표를 생성하세요"
         none: "생성된 투표가 없습니다"
         expectation: "예측하기"
+        tab_overview: '개요'
+        tab_data: '자료'
+        tab_discussion: '토론'
+        tab_leaderboard: '점수'
