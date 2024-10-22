@@ -105,6 +105,12 @@ class PollSerializer < ApplicationSerializer
   end
 
   def post_topic_content
-    object.post&.cooked
+    require 'nokogiri'
+
+    html_string =     object.post&.cooked
+    doc = Nokogiri::HTML(html_string)
+    doc.css('.poll').each(&:remove)
+
+    return doc.to_html
   end
 end

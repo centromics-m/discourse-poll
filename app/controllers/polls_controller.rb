@@ -6,7 +6,12 @@ class DiscoursePoll::PollsController < ::ApplicationController
   before_action :ensure_logged_in, except: %i[voters poll_list grouped_poll_results]
 
   def poll_list
-    @polls = Poll.all
+    @polls = Poll.order('id desc').limit(10)
+    render :json => @polls, each_serializer: PollSerializer
+  end
+
+  def poll_admin_list
+    @polls = Poll.order('id desc').limit(10)
     render :json => @polls, each_serializer: PollSerializer
   end
 
