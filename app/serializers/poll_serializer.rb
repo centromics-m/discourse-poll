@@ -22,6 +22,7 @@ class PollSerializer < ApplicationSerializer
              :post_id,
              :post_url,
              :post_topic_title,
+             :post_topic_content,
              :created_at,
              :updated_at
 
@@ -101,5 +102,9 @@ class PollSerializer < ApplicationSerializer
 
   def post_topic_title
     object.post&.topic&.title
+  end
+
+  def post_topic_content
+    object.post&.cooked
   end
 end

@@ -66,6 +66,11 @@
   position: relative;
 }
 
+.item ul.nav {
+  margin:2rem 0 1.5rem;
+  padding:0;
+}
+
 .item ul.nav li {
   display: inline-block;
 }
@@ -84,11 +89,8 @@
 }
 
 .card-panel {
-  transition: box-shadow .25s;
   padding: 24px;
   margin: .5rem 0 1rem 0;
-  border-radius: 2px;
-  background-color: #fff;
 }
 
 .item .card-panel {
@@ -120,9 +122,6 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .card-panel {
-    background-color: #666;
-  }
 
   .item:before, .last-item:after {
     background-color: #333;
