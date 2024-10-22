@@ -22,7 +22,7 @@
   h1 {
     font-size: 4.2rem;
     line-height: 110%;
-    margin: 2.1rem 0 1.68rem 0;
+    margin: 2rem 0 1.5rem 0;
   }
 
   h2 {
@@ -31,7 +31,7 @@
     font-size: 3.56rem;
     line-height: 110%;
     margin: 1.78rem 0 1.424rem 0;
-    margin-top: -50px;
+    margin-top: -46px;
     margin-left: 3rem;
     display: block;
     font-size: 2em;
@@ -101,9 +101,6 @@
 .card-panel  {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
 }
-
-@import "common/foundation/variables";
-
 
 @media (prefers-color-scheme: dark) {
   .card-panel {
