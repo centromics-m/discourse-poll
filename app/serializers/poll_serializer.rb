@@ -22,7 +22,8 @@ class PollSerializer < ApplicationSerializer
              :post_id,
              :post_url,
              :post_topic_title,
-             :post_topic_content,
+             :post_topic_poll,
+             :post_topic_overview,
              :created_at,
              :updated_at
 
@@ -104,10 +105,16 @@ class PollSerializer < ApplicationSerializer
     object.post&.topic&.title
   end
 
-  def post_topic_content
-    require 'nokogiri'
+  def post_topic_poll
+    html_string = object.post&.cooked
+    doc = Nokogiri::HTML(html_string)
+    doc_element = doc.css('.poll')
 
-    html_string =     object.post&.cooked
+    return doc_element.to_html
+  end
+
+  def post_topic_overview
+    html_string = object.post&.cooked
     doc = Nokogiri::HTML(html_string)
     doc.css('.poll').each(&:remove)
 

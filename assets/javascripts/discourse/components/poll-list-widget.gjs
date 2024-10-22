@@ -66,6 +66,9 @@ export default class PollListWidgetComponent extends Component {
             <h2 class="item-date">{{poll.post_topic_title_truncated}} {{if poll.title poll.title}}</h2>
             <div class="card-panel">
               <h3 class="card-title"><a href="{{poll.post_url}}"> {{poll.created_date}}</a></h3>
+              <div>
+                {{{poll.post_topic_poll}}}
+              </div>
               <ul class="nav">
                 <li class="active"><a href="">{{i18n "poll.admin.tab_overview"}}</a></li>
                 <li><a href="">{{i18n "poll.admin.tab_data"}}</a></li>
@@ -73,7 +76,7 @@ export default class PollListWidgetComponent extends Component {
                 <li><a href="">{{i18n "poll.admin.tab_leaderboard"}}</a></li>
               </ul>
               <div>
-                {{{poll.post_topic_content}}}
+                {{{poll.post_topic_overview}}}
               </div>
             </div>
           </article>
