@@ -4,6 +4,7 @@ import { service } from "@ember/service";
 import { action } from "@ember/object";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import i18n from "discourse-common/helpers/i18n";
+import PollListTab from "./poll-list-tab";
 
 export default class PollListWidgetComponent extends Component {
   @tracked poll;
@@ -53,7 +54,6 @@ export default class PollListWidgetComponent extends Component {
     return str;
   }
 
-
   <template>
     {{#if this.showInFrontend}}
     <div id="poll-main" {{didInsert this.fetchPolls}}>
@@ -69,15 +69,7 @@ export default class PollListWidgetComponent extends Component {
               <div>
                 {{{poll.post_topic_poll}}}
               </div>
-              <ul class="nav">
-                <li class="active"><a href="">{{i18n "poll.admin.tab_overview"}}</a></li>
-                <li><a href="">{{i18n "poll.admin.tab_data"}}</a></li>
-                <li><a href="{{poll.post_url}}">{{i18n "poll.admin.tab_discussion"}}</a></li>
-                <li><a href="">{{i18n "poll.admin.tab_leaderboard"}}</a></li>
-              </ul>
-              <div>
-                {{{poll.post_topic_overview}}}
-              </div>
+              <PollListTab @poll={{poll}} />
             </div>
           </article>
           {{/each}}
