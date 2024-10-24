@@ -4,7 +4,15 @@ import { service } from "@ember/service";
 import { action } from "@ember/object";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import i18n from "discourse-common/helpers/i18n";
+import { fn } from "@ember/helper";
 import PollListTab from "./poll-list-tab";
+import { htmlSafe } from '@ember/template';
+
+const dateOptions = {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+};
 
 export default class PollListWidgetComponent extends Component {
   @tracked poll;
@@ -13,6 +21,8 @@ export default class PollListWidgetComponent extends Component {
   @service router;
   @service pollsService;
   @service siteSettings;
+
+
 
   // Fetch and update polls
   get getPolls() {
@@ -26,7 +36,6 @@ export default class PollListWidgetComponent extends Component {
       polls = polls.map ((poll) => {
         return {
           ...poll,
-          created_date: new Date(poll.created_at).toISOString().slice(0, 10),
           post_topic_title_truncated: this._truncateString(poll.post_topic_title, 45),
         };
       });
@@ -38,6 +47,16 @@ export default class PollListWidgetComponent extends Component {
     });
   }
 
+  @action
+  getCloseDateFormat(date_o) {
+    return htmlSafe('<span class="close-date">'+this.dateFormat(date_o)+'</span>');
+  }
+
+  @action
+  getOpenDateFormat(date_o) {
+    return htmlSafe('<span class="open-date">'+this.dateFormat(date_o)+'</span>');
+  }
+
   get isFrontpage() {
     return this.router.currentRouteName === 'discovery.latest' ||
       this.router.currentRouteName === 'index';
@@ -46,6 +65,11 @@ export default class PollListWidgetComponent extends Component {
   get showInFrontend() {
     return this.isFrontpage && this.siteSettings.poll_show_in_frontpage;
   }
+
+  dateFormat(date_o) {
+    return new Date(date_o).toLocaleDateString(I18n.currentLocale(),dateOptions);
+  }
+
 
   _truncateString(str, len = 40) {
     if (str.length > len) {
@@ -63,9 +87,9 @@ export default class PollListWidgetComponent extends Component {
           {{#each this.polls as |poll index|}}
         <article class="item">
             <i class="vertical-line"></i>
-            <h2 class="item-date">{{poll.post_topic_title_truncated}} {{if poll.title poll.title}}</h2>
+            <h2 class="card-title"><a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}} {{if poll.title poll.title}}</a></h2>
             <div class="card-panel">
-              <h3 class="card-title"><a href="{{poll.post_url}}"> {{poll.created_date}}</a></h3>
+              <h3 class="item-date">{{(this.getOpenDateFormat poll.created_at)}} {{if poll.close (this.getCloseDateFormat poll.close)}}</h3>
               <div>
                 {{{poll.post_topic_poll}}}
               </div>
