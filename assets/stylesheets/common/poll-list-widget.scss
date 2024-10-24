@@ -136,7 +136,7 @@
 
   .close-date:before {
     background: #fff;
-    border: 3px solid var(--primary);
+    border: 3px solid #666;
     border-radius: 50%;
     width: 10px;
     height: 10px;
@@ -149,7 +149,7 @@
   }
 
   .open-date:after {
-    border-top: 2px solid var(--primary);
+    border-top: 2px solid #666;
     padding-right:70%;
     margin-left:2%;
     content: "";
@@ -166,6 +166,10 @@
 
   .item:before, .last-item:after {
     background-color: #333;
+  }
+
+  .open-date:after, .close-date:before {
+    border-color: #666;
   }
 
   .item-date {
