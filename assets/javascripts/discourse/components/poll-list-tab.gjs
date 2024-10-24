@@ -1,9 +1,10 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import Component from "@glimmer/component";
+import { tracked } from "@glimmer/tracking";
 import { on } from "@ember/modifier";
 import { action } from "@ember/object";
 import { fn } from "@ember/helper";
 import i18n from "discourse-common/helpers/i18n";
+import PollListTabChildDiscussion from "./poll-list-tab-child-discussion";
 
 export default class PollListTabComponent extends Component {
     @tracked selectedTab = 'tab1'; // 초기 선택된 탭
@@ -45,7 +46,7 @@ export default class PollListTabComponent extends Component {
       {{/if}}
 
       {{#if (this.isActiveTab this.selectedTab "tab3")}}
-        <p>Content for Tab 3</p>
+        <PollListTabChildDiscussion @postId={{@poll.post_id}} />
       {{/if}}
 
       {{#if (this.isActiveTab this.selectedTab "tab4")}}
