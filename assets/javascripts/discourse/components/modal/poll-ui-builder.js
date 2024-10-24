@@ -27,6 +27,7 @@ export default class PollUiBuilderModal extends Component {
   pollTitle;
   pollOptions = [EmberObject.create({ value: "", correct: false})];
   pollOptionsText = "";
+  pollDataLinks = [EmberObject.create({ url: "", title: "", content: ""})];
   pollMin = 1;
   pollMax = 2;
   pollStep = 1;
@@ -41,6 +42,7 @@ export default class PollUiBuilderModal extends Component {
   @or("showAdvanced", "isNumber") showNumber;
   @or("showAdvanced", "isRankedChoice") showRankedChoice;
   @gt("pollOptions.length", 1) canRemoveOption;
+  @gt("pollDataLinks.length", 1) canRemoveDataLink;
   @or("isRankedChoice", "isRegular") rankedChoiceOrRegular;
   @or("isRankedChoice", "isNumber") rankedChoiceOrNumber;
 
@@ -151,6 +153,7 @@ export default class PollUiBuilderModal extends Component {
     publicPoll,
     pollTitle,
     pollOptions,
+    pollDataLinks,
     pollMin,
     pollMax,
     pollStep,
@@ -211,8 +214,6 @@ export default class PollUiBuilderModal extends Component {
     if (pollTitle) {
       output += `# ${pollTitle.trim()}\n`;
     }
-
-
 
     if (pollOptions.length > 0 && pollType !== NUMBER_POLL_TYPE) {
       pollOptions.forEach((option) => {
@@ -403,6 +404,20 @@ export default class PollUiBuilderModal extends Component {
   @action
   removeOption(option) {
     this.pollOptions.removeObject(option);
+  }
+
+  @action
+    addDataLinkOption(atIndex) {
+    if (atIndex === -1) {
+      atIndex = this.pollDataLinks.length;
+    }
+    const dataLink = EmberObject.create({ url: "", title: "", content: ""});
+    this.pollDataLinks.insertAt(atIndex, dataLink);
+  }
+
+  @action
+  removeDataLinkOption(option) {
+    this.pollDataLinks.removeObject(option);
   }
 
   @action

@@ -6,7 +6,7 @@ class CreatePollDataLinksTables < ActiveRecord::Migration[5.2]
       t.references :poll, index: true, foreign_key: true
       t.string :link, null: false
       t.string :title, null: false
-      t.text :content, null: false
+      t.text :content
       t.timestamps
     end
   end

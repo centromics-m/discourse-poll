@@ -139,6 +139,41 @@
           </div>
         {{/if}}
       </div>
+      <div class="poll-data-link">
+        {{#each this.dataLinks as |data_link index|}}
+          <div class="input-group poll-option-value">
+            <input
+              type="text"
+              value={{data_link.url}}
+              placeholder="URL"
+            />
+            <input
+              type="text"
+              value={{data_link.title}}
+              placeholder="Title"
+            />
+            <Textarea
+              type="text"
+              value={{data_link.content}}
+              placeholder="Content"
+            />
+            {{#if this.canRemoveDataLink}}
+              <DButton
+                @icon="trash-alt"
+                @action={{fn this.removeDataLinkOption option}}
+              />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    <div class="poll-data-link-controls">
+      <DButton
+        @icon="plus"
+        @label="poll.ui_builder.poll_data_link_options.add"
+        @action={{fn this.addDataLinkOption -1}}
+        class="btn-default poll-option-add"
+      />
+    </div>
     {{/unless}}
 
     {{#unless this.rankedChoiceOrRegular}}
