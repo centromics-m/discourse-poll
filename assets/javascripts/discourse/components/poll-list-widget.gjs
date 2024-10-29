@@ -4,10 +4,10 @@ import { service } from "@ember/service";
 import { action } from "@ember/object";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import i18n from "discourse-common/helpers/i18n";
-import { fn } from "@ember/helper";
 import CategoryChooser from "select-kit/components/category-chooser";
 import PollListTab from "./poll-list-tab";
 import { htmlSafe } from "@ember/template";
+import Category from "discourse/models/category";
 
 const dateOptions = {
   year: "numeric",
@@ -23,7 +23,16 @@ export default class PollListWidgetComponent extends Component {
   @service pollsService;
   @service siteSettings;
   @tracked categoryId = this.pollsService.category;
+  @tracked currentCategory = null;
 
+  constructor() {
+    super(...arguments);
+    this.loadCurrentCategory();
+  }
+
+  async loadCurrentCategory() {
+    this.currentCategory = await Category.findById(this.categoryId);
+  }
   // Fetch and update polls
   get getPolls() {
     return this.pollsService.polls;
@@ -69,6 +78,8 @@ export default class PollListWidgetComponent extends Component {
     this.pollsService.setCategory(category);
     this.fetchPolls();
     this.categoryId=category;
+
+    this.loadCurrentCategory();
   }
 
   get isFrontpage() {
@@ -96,6 +107,8 @@ export default class PollListWidgetComponent extends Component {
     return str;
   }
 
+
+
   <template>
     {{#if this.showInFrontend}}
       <div id="poll-main" {{didInsert this.fetchPolls}}>
@@ -106,6 +119,7 @@ export default class PollListWidgetComponent extends Component {
             class="leaderboard__period-chooser"
           />
         </span></h1>
+        <a href="{{this.currentCategory.url}}" class="poll-category-more">{{this.currentCategory.name}} {{i18n "poll.admin.more"}}</a>
         <section>
           {{#if this.polls.length}}
             {{#each this.polls as |poll index|}}

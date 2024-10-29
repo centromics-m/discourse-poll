@@ -117,6 +117,7 @@ ko:
         name: "제목"
         period: "기간"
         edit: "편집"
+        more : "더보기"
         cta: "먼저 투표를 생성하세요"
         none: "생성된 투표가 없습니다"
         expectation: "예측하기"

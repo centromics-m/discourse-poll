@@ -160,6 +160,7 @@ en:
         name: "title"
         period: "period"
         edit: "edit"
+        more : "more"
         cta: "먼저 투표를 생성하세요"
         none: "none"
         expectation: "expectation"
