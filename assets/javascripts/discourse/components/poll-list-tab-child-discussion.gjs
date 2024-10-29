@@ -9,7 +9,7 @@ import DButton from "discourse/components/d-button";
 import i18n from "discourse-common/helpers/i18n";
 import Topic from "discourse/models/topic";
 
-// param: @topicId
+// param: @postId
 export default class PostListTabChildDiscussionComponent extends Component {
   //@service currentUser;
   @service store;
@@ -17,7 +17,7 @@ export default class PostListTabChildDiscussionComponent extends Component {
 
   @action initdata() {
     //console.log('this.args', this.args);
-    console.log('this.args.postId', this.args.postId);
+    console.log("this.args.postId", this.args.postId);
     this.fetchPosts(this.args.postId);
   }
 
@@ -37,12 +37,16 @@ export default class PostListTabChildDiscussionComponent extends Component {
     );
 
     // 최신 순 정렬
-    firstLevelPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    firstLevelPosts.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
     // decorate posts
     firstLevelPosts.forEach((post) => {
       post.created_date = this._dateString(post.created_at);
-      post.cooked_truncated = this._truncateString(this._stripHtmlTags(post.cooked));
+      post.cooked_truncated = this._truncateString(
+        this._stripHtmlTags(post.cooked)
+      );
     });
 
     this.comments = firstLevelPosts;
@@ -66,9 +70,10 @@ export default class PostListTabChildDiscussionComponent extends Component {
   <template>
     <div class="post-list" {{didInsert this.initdata}}>
       <ul>
-        {{#each this.comments as |post| }}
+        {{#each this.comments as |post|}}
           <li>
-            [{{post.created_date}}] {{post.cooked_truncated}}
+            [{{post.created_date}}]
+            {{post.cooked_truncated}}
           </li>
         {{/each}}
       </ul>
