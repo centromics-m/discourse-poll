@@ -110,6 +110,9 @@
 .item-date {
   font-weight: normal;
   color:#ccc;
+  margin:0 0 1.5rem;
+  padding:0;
+  line-height: 100%;
 }
 
 .vertical-line {
@@ -177,7 +180,7 @@ h1 > span > details {
     content: "";
     position: relative;
     z-index: 1;
-    top: 15px;
+    top: 1rem;
   }
 }
 
