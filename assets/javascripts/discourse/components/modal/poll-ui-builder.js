@@ -153,7 +153,6 @@ export default class PollUiBuilderModal extends Component {
     publicPoll,
     pollTitle,
     pollOptions,
-    pollDataLinks,
     pollMin,
     pollMax,
     pollStep,
@@ -201,6 +200,7 @@ export default class PollUiBuilderModal extends Component {
       pollHeader += ` groups=${pollGroups}`;
     }
     if (pollAutoClose) {
+      console.log(pollAutoClose);
       pollHeader += ` close=${pollAutoClose.toISOString()}`;
     }
 

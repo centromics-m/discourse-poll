@@ -5,7 +5,6 @@ class Poll < ActiveRecord::Base
   self.inheritance_column = nil
 
   belongs_to :post, -> { with_deleted }
-
   has_many :poll_options, -> { order(:id) }, dependent: :destroy
   has_many :poll_votes
 

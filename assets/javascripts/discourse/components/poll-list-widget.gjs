@@ -5,6 +5,7 @@ import { action } from "@ember/object";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import i18n from "discourse-common/helpers/i18n";
 import { fn } from "@ember/helper";
+import CategoryChooser from "select-kit/components/category-chooser";
 import PollListTab from "./poll-list-tab";
 import { htmlSafe } from "@ember/template";
 
@@ -21,6 +22,7 @@ export default class PollListWidgetComponent extends Component {
   @service router;
   @service pollsService;
   @service siteSettings;
+  @tracked categoryId = this.pollsService.category;
 
   // Fetch and update polls
   get getPolls() {
@@ -62,6 +64,13 @@ export default class PollListWidgetComponent extends Component {
     );
   }
 
+  @action
+  changeCategory(category) {
+    this.pollsService.setCategory(category);
+    this.fetchPolls();
+    this.categoryId=category;
+  }
+
   get isFrontpage() {
     return (
       this.router.currentRouteName === "discovery.latest" ||
@@ -90,9 +99,13 @@ export default class PollListWidgetComponent extends Component {
   <template>
     {{#if this.showInFrontend}}
       <div id="poll-main" {{didInsert this.fetchPolls}}>
-        <h1 class="cv-title"><span class="black white-text">{{i18n
-              "poll.admin.expectation"
-            }}</span></h1>
+        <h1 class="cv-title"><span class="black white-text">
+          <CategoryChooser
+            @value={{this.categoryId}}
+            @onChange={{this.changeCategory}}
+            class="leaderboard__period-chooser"
+          />
+        </span></h1>
         <section>
           {{#if this.polls.length}}
             {{#each this.polls as |poll index|}}

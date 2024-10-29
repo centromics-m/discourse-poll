@@ -12,7 +12,12 @@
   font-weight: normal;
 
 
-  div {display: block}
+  div {
+    .select-kit-filter {
+      display:none;
+    }
+  }
+
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Oswald',sans-serif;
@@ -20,9 +25,12 @@
   }
 
   h1 {
-    font-size: 4.2rem;
     line-height: 110%;
-    margin: 2rem 0 1.2rem 0;
+    margin: 2rem 0 0 0;
+
+    .selected-name .badge-category__name {
+        color : var(--secondary);
+    }
   }
 
   h2 {
@@ -112,7 +120,7 @@
   bottom: 0;
 }
 
-.cv-title span {
+h1 > span {
   padding: 1rem;
 }
 .white-text {
@@ -124,6 +132,23 @@
 
 .card-panel  {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+h1 > span > details {
+  font-size: 1rem;
+}
+
+.cv-title .leaderboard__period-chooser {
+  margin:0;
+  padding:0;
+}
+.cv-title  .select-kit .select-kit-header {
+  background: none;
+  border: none;
+}
+
+.selected-name {
+  font-size: 2rem;
 }
 
 
