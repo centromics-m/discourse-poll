@@ -45,10 +45,10 @@
     font-size: 2em;
     font-weight: bold;
   }
-}
+
 
 .item:before, .last-item:after {
-  background: #fff;
+  background: var(--quaternary);
   border: 8px solid var(--primary);
   border-radius: 50%;
   width: 22px;
@@ -104,6 +104,7 @@
 .item .card-panel {
   margin: 0;
   margin: 2rem 0 0 1.5rem;
+  background: var(--quaternary);
 }
 
 .item-date {
@@ -130,10 +131,6 @@ h1 > span {
   background-color:  var(--primary)
 }
 
-.card-panel  {
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
-}
-
 h1 > span > details {
   font-size: 1rem;
 }
@@ -150,7 +147,7 @@ h1 > span > details {
 .selected-name {
   font-size: 2rem;
 }
-
+}
 
 @media (max-width: 1199px) {
   .open-date:after {
@@ -175,7 +172,7 @@ h1 > span > details {
 
   .open-date:after {
     border-top: 2px solid #666;
-    padding-right:70%;
+    padding-right:65%;
     margin-left:2%;
     content: "";
     position: relative;
@@ -187,14 +184,6 @@ h1 > span > details {
 @media (prefers-color-scheme: dark) {
   .close-date:before {
     background: var(--secondary);
-  }
-
-  .item:before, .last-item:after {
-    background-color: #333;
-  }
-
-  .open-date:after, .close-date:before {
-    border-color: #666;
   }
 
   .item-date {
