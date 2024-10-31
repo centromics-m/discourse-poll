@@ -99,6 +99,12 @@ export default class PollUiBuilderModal extends Component {
       .length;
   }
 
+  @discourseComputed("pollDataLinks.@each.value")
+  pollDataLinksCount(pollDataLinks) {
+    return (pollDataLinks || []).filter((dataLink) => dataLink.url.length > 0)
+      .length;
+  }
+
   @discourseComputed("site.groups")
   siteGroups(groups) {
     // prevents group "everyone" to be listed
@@ -139,6 +145,7 @@ export default class PollUiBuilderModal extends Component {
     "publicPoll",
     "pollTitle",
     "pollOptions.@each.value",
+    "pollDataLinks.@each.value",
     "pollMin",
     "pollMax",
     "pollStep",
@@ -153,6 +160,7 @@ export default class PollUiBuilderModal extends Component {
     publicPoll,
     pollTitle,
     pollOptions,
+    pollDataLinks,
     pollMin,
     pollMax,
     pollStep,
@@ -227,7 +235,23 @@ export default class PollUiBuilderModal extends Component {
       });
     }
 
+
+
     output += "[/poll]\n";
+
+    if (pollDataLinks.length > 0 ) {
+      output += "[pollDataLink]\n";
+
+      pollDataLinks.forEach((dataLink) => {
+        if (dataLink.url.length > 0) {
+          output += `* ${dataLink.url} / ${dataLink.title} / ${dataLink.content}`;
+          output +="\n";
+        }
+      });
+
+      output += "[/pollDataLink]\n";
+    }
+
     return output;
   }
 
@@ -256,9 +280,16 @@ export default class PollUiBuilderModal extends Component {
     return EmberObject.create(options);
   }
 
+
+
   @discourseComputed("pollOptions.@each.value")
   showMinNumOfOptionsValidation(pollOptions) {
     return pollOptions.length !== 1 || pollOptions[0].value !== "";
+  }
+
+  @discourseComputed("pollDataLinks.@each.value")
+  showMinNumOfDataLinksValidation(dataLinks) {
+    return dataLinks.length !== 1 || dataLinks[0].url !== "";
   }
 
   @discourseComputed(
@@ -380,6 +411,21 @@ export default class PollUiBuilderModal extends Component {
   }
 
   @action
+  updateUrlValue(dataLink, event) {
+    dataLink.set("url", event.target.value);
+  }
+
+  @action
+  updateTitleValue(dataLink, event) {
+    dataLink.set("title", event.target.value);
+  }
+
+  @action
+  updateContentValue(dataLink, event) {
+    dataLink.set("content", event.target.value);
+  }
+
+  @action
   onInputKeydown(index, event) {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -407,10 +453,12 @@ export default class PollUiBuilderModal extends Component {
   }
 
   @action
-    addDataLinkOption(atIndex) {
+  addDataLinkOption(atIndex) {
+    console.log('1');
     if (atIndex === -1) {
       atIndex = this.pollDataLinks.length;
     }
+    console.log('2');
     const dataLink = EmberObject.create({ url: "", title: "", content: ""});
     this.pollDataLinks.insertAt(atIndex, dataLink);
   }

@@ -140,27 +140,30 @@
         {{/if}}
       </div>
       <div class="poll-data-link">
-        {{#each this.dataLinks as |data_link index|}}
+        {{#each this.pollDataLinks as |data_link index|}}
           <div class="input-group poll-option-value">
             <input
               type="text"
               value={{data_link.url}}
+              {{on "input" (fn this.updateUrlValue data_link)}}
               placeholder="URL"
             />
             <input
               type="text"
               value={{data_link.title}}
+              {{on "input" (fn this.updateTitleValue data_link)}}
               placeholder="Title"
             />
             <Textarea
               type="text"
               value={{data_link.content}}
+              {{on "input" (fn this.updateContentValue data_link)}}
               placeholder="Content"
             />
             {{#if this.canRemoveDataLink}}
               <DButton
                 @icon="trash-alt"
-                @action={{fn this.removeDataLinkOption option}}
+                @action={{fn this.removeDataLinkOption data_link}}
               />
             {{/if}}
           </div>

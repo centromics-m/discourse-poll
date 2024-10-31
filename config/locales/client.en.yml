@@ -151,6 +151,8 @@ en:
         poll_options:
           label: Options (one per line)
           add: Add option
+        poll_data_link_options:
+          add: Add data link
         automatic_close:
           label: Automatically close poll
         show_advanced: "Show Advanced Options"

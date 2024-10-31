@@ -108,6 +108,8 @@ ko:
         poll_options:
           label: 옵션 (한 줄에 하나씩)
           add: 옵션 추가
+        poll_data_link_options:
+          add: 데이터링크 추가
         automatic_close:
           label: 설문 조사 자동 종료
         show_advanced: "고급 옵션 표시"
