@@ -92,7 +92,7 @@ export default class PollResultsStandardComponent extends Component {
               </div>
             {{/unless}}
             {{#if @isPublic}}
-              <PollVoters
+              {{!-- <PollVoters
                 @postId={{@postId}}
                 @pollType={{@pollType}}
                 @optionId={{option.id}}
@@ -102,7 +102,7 @@ export default class PollResultsStandardComponent extends Component {
                 @voters={{option.voters}}
                 @fetchVoters={{@fetchVoters}}
                 @loading={{option.loading}}
-              />
+              /> --}}
             {{/if}}
           </div>
         </li>

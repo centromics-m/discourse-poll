@@ -5,6 +5,7 @@ import { computed } from '@ember/object';
 import { ajax } from 'discourse/lib/ajax';
 
 export default class pollsService extends Service {
+  @service store;
   @tracked category=4;
 
   setCategory(category) {
@@ -15,5 +16,22 @@ export default class pollsService extends Service {
     return ajax("/polls/poll_list.json?category="+this.category).then((response) => {
       return response;
     });
+  }
+
+  postsForPoll(poll) {
+    return this.fetchPostById(poll.post_id).then((response) => {
+      return response;
+    });
+  }
+
+  async fetchPostById(post_id) {
+    //console.log('fetchPostById', post_id);
+    try {
+      const post = await this.store.find("post", post_id);
+      //console.log("Fetched post:", post);
+      return post;
+    } catch (error) {
+      //console.error("Error fetching post:", error);
+    }
   }
 }

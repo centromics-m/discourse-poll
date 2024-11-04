@@ -4,10 +4,13 @@ import { service } from "@ember/service";
 import { action } from "@ember/object";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import i18n from "discourse-common/helpers/i18n";
+import I18n from "discourse-i18n";
 import CategoryChooser from "select-kit/components/category-chooser";
-import PollListTab from "./poll-list-tab";
 import { htmlSafe } from "@ember/template";
 import Category from "discourse/models/category";
+
+import PollListItemWidget from "./poll-list-item-widget"
+import PollListTab from "./poll-list-tab";
 
 const dateOptions = {
   year: "numeric",
@@ -45,10 +48,7 @@ export default class PollListWidgetComponent extends Component {
       polls = polls.map((poll) => {
         return {
           ...poll,
-          post_topic_title_truncated: this._truncateString(
-            poll.post_topic_title,
-            45
-          ),
+          post_topic_title_truncated: this._truncateString(poll.post_topic_title, 45),
         };
       });
       if (polls.length > 0) {
@@ -77,7 +77,7 @@ export default class PollListWidgetComponent extends Component {
   changeCategory(category) {
     this.pollsService.setCategory(category);
     this.fetchPolls();
-    this.categoryId=category;
+    this.categoryId = category;
 
     this.loadCurrentCategory();
   }
@@ -94,10 +94,7 @@ export default class PollListWidgetComponent extends Component {
   }
 
   dateFormat(date_o) {
-    return new Date(date_o).toLocaleDateString(
-      I18n.currentLocale(),
-      dateOptions
-    );
+    return new Date(date_o).toLocaleDateString(I18n.currentLocale(), dateOptions);
   }
 
   _truncateString(str, len = 40) {
@@ -107,35 +104,35 @@ export default class PollListWidgetComponent extends Component {
     return str;
   }
 
-
-
   <template>
     {{#if this.showInFrontend}}
       <div id="poll-main" {{didInsert this.fetchPolls}}>
-        <h1 class="cv-title"><span class="black white-text">
-          <CategoryChooser
-            @value={{this.categoryId}}
-            @onChange={{this.changeCategory}}
-            class="leaderboard__period-chooser"
-          />
-        </span></h1>
-        <a href="{{this.currentCategory.url}}" class="poll-category-more">{{this.currentCategory.name}} {{i18n "poll.admin.more"}}</a>
+        <h1 class="cv-title">
+          <span class="black white-text">
+            <CategoryChooser
+              @value={{this.categoryId}}
+              @onChange={{this.changeCategory}}
+              class="leaderboard__period-chooser"
+            />
+          </span>
+        </h1>
+        <a href="{{this.currentCategory.url}}" class="poll-category-more">
+          {{this.currentCategory.name}} {{i18n "poll.admin.more"}}
+        </a>
         <section>
           {{#if this.polls.length}}
             {{#each this.polls as |poll index|}}
               <article class="item">
                 <i class="vertical-line"></i>
-                <h2 class="card-title"><a
-                    href="{{poll.post_url}}"
-                  >{{poll.post_topic_title_truncated}}
-                    {{if poll.title poll.title}}</a></h2>
+                <h2 class="card-title">
+                  <a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}}{{if poll.title poll.title}}</a></h2>
                 <div class="card-panel">
-                  <h3 class="item-date">{{(this.getOpenDateFormat
-                      poll.created_at
-                    )}}
+                  <h3 class="item-date">
+                    {{(this.getOpenDateFormat poll.created_at)}}
                     {{if poll.close (this.getCloseDateFormat poll.close)}}</h3>
-                  <div>
-                    {{{poll.post_topic_poll}}}
+                  <div class='poll-list-widget-wrap'>
+                    {{!-- {{{poll.post_topic_poll}}} --}}
+                    <PollListItemWidget @poll={{poll}} />
                   </div>
                   <PollListTab @poll={{poll}} />
                 </div>
