@@ -208,7 +208,6 @@ export default class PollUiBuilderModal extends Component {
       pollHeader += ` groups=${pollGroups}`;
     }
     if (pollAutoClose) {
-      console.log(pollAutoClose);
       pollHeader += ` close=${pollAutoClose.toISOString()}`;
     }
 
@@ -235,21 +234,22 @@ export default class PollUiBuilderModal extends Component {
       });
     }
 
-
-
     output += "[/poll]\n";
 
     if (pollDataLinks.length > 0 ) {
-      output += "[pollDataLink]\n";
+      output += "[poll_data_link]\n";
 
       pollDataLinks.forEach((dataLink) => {
         if (dataLink.url.length > 0) {
-          output += `* ${dataLink.url} / ${dataLink.title} / ${dataLink.content}`;
-          output +="\n";
+          output += `[${dataLink.title}](${dataLink.url})\n`;
+
+          if(dataLink.content!='') {
+            output +=`${dataLink.content}`;
+          }
         }
       });
 
-      output += "[/pollDataLink]\n";
+      output += "\n[/poll_data_link]\n";
     }
 
     return output;
@@ -454,7 +454,6 @@ export default class PollUiBuilderModal extends Component {
 
   @action
   addDataLinkOption(atIndex) {
-    console.log('1');
     if (atIndex === -1) {
       atIndex = this.pollDataLinks.length;
     }

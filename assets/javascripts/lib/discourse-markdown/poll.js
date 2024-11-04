@@ -112,7 +112,7 @@ const rule = {
   before(state, { attrs }) {
     let open = state.tokens.filter((t) => t.type === "poll_open").length;
     let closed = state.tokens.filter((t) => t.type === "poll_close").length;
-
+    console.log('POLL START');
     if (open > closed) {
       return; // poll-ception is now allowed
     }
@@ -125,7 +125,7 @@ const rule = {
     if (openToken.type !== "poll_open") {
       return;
     }
-
+    console.log('POLL END');
     let attrs = openToken.poll_attrs;
     let openTokenIndex = state.tokens.indexOf(openToken);
     let pollTokens = state.tokens.slice(openTokenIndex + 1);
@@ -189,6 +189,21 @@ const rule = {
   },
 };
 
+const rule_data_link = {
+  tag: "poll_data_link",
+
+  before: function (state, info) {
+    state.push("poll_data_link", "div", 1);
+  },
+
+  after: function (state, openToken) {
+    openToken.attrs ||= [];
+    openToken.attrs.push(["class", "poll-data-link"]);
+    state.push("poll_data_link", "div", -1);
+  },
+};
+
+
 export function setup(helper) {
   helper.allowList([
     "a.button.cast-votes",
@@ -201,6 +216,7 @@ export function setup(helper) {
     "div.poll-title",
     "div.poll-score",
     "div.poll",
+    "div.poll-data-link",
     "div[data-*]",
     "li[data-*]",
     "span.info-label",
@@ -213,7 +229,10 @@ export function setup(helper) {
     opts.pollMaximumOptions = siteSettings.poll_maximum_options;
   });
 
-  helper.registerPlugin((md) => md.block.bbcode.ruler.push("poll", rule));
+  helper.registerPlugin((md) => {
+    md.block.bbcode.ruler.push("poll", rule);
+    md.block.bbcode.ruler.push("poll_data_link", rule_data_link);
+  });
 }
 
 /*!

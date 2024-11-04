@@ -44,7 +44,7 @@ export default class PollListTabComponent extends Component {
       {{/if}}
 
       {{#if (this.isActiveTab this.selectedTab "tab2")}}
-        <p>Content for Tab 2</p>
+        {{{@poll.poll_data_link}}}
       {{/if}}
 
       {{#if (this.isActiveTab this.selectedTab "tab3")}}
