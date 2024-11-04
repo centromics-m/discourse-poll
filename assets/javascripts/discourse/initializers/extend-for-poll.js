@@ -49,6 +49,19 @@ function initializePolls(api) {
     },
   });
 
+
+  api.modifyClass('composer:composerController', {
+    pluginId: PLUGIN_ID,
+
+    initMarkdownIt: function (md) {
+      // 새로운 태그 추가
+      console.log('asdfasdf');
+      md.renderer.rules['my-tag'] = (tokens, idx) => {
+        return `<my-tag>${md.utils.escapeHtml(tokens[idx].content)}</my-tag>`;
+      };
+    }
+  });
+
   api.modifyClass("model:post", {
     pluginId: PLUGIN_ID,
     _polls: null,
