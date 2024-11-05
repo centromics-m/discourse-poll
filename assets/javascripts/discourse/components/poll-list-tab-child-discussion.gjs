@@ -13,6 +13,7 @@ import Topic from "discourse/models/topic";
 export default class PostListTabChildDiscussionComponent extends Component {
   //@service currentUser;
   @service store;
+  @service pollsService;
   @tracked comments = null;
 
   @action initdata() {
@@ -22,29 +23,28 @@ export default class PostListTabChildDiscussionComponent extends Component {
   }
 
   async fetchPosts(postId) {
-    //const post = await this.store.findRecord("post", postId); --> 동작 X
-
-    const post = await this.store.find("post", postId);
+    // const post = await this.store.find("post", postId);
+    const post = await this.pollsService.fetchPostById(postId);
     const topicId = post.topic_id;
 
-    // topic 에 대한 post 추출
+    // extract post for the topic
     const topic = await Topic.find(topicId, {});
     let allPosts = topic.post_stream.posts;
 
-    // 1차 댓글 필터링
+    // firstly filter comments by reply_to_post_number
     let firstLevelPosts = allPosts.filter(
-      (post) => post.reply_to_post_number === null
+      (p) => p.reply_to_post_number === null
     );
 
-    // 최신 순 정렬
+    // sort by created_at
     firstLevelPosts.sort(
       (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
 
     // decorate posts
-    firstLevelPosts.forEach((post) => {
-      post.created_date = this._dateString(post.created_at);
-      post.cooked_truncated = this._truncateString(
+    firstLevelPosts.forEach((p) => {
+      p.created_date = this._dateString(post.created_at);
+      p.cooked_truncated = this._truncateString(
         this._stripHtmlTags(post.cooked)
       );
     });

@@ -106,7 +106,7 @@ export default class PollListWidgetComponent extends Component {
 
   <template>
     {{#if this.showInFrontend}}
-      <div id="poll-main" {{didInsert this.fetchPolls}}>
+      <div class="poll-widget-main" {{didInsert this.fetchPolls}}>
         <h1 class="cv-title">
           <span class="black white-text">
             <CategoryChooser
