@@ -32,7 +32,6 @@ export default class PollListItemWidgetComponent extends Component {
 
   get post() {
     return this.postForPoll(this.poll);
-    //return '11';
   }
 
   postForPoll(poll) {
@@ -43,15 +42,15 @@ export default class PollListItemWidgetComponent extends Component {
     const pollGroupableUserFields = this.siteSettings.groupable_user_fields;
     const pollName = poll.name;
     const pollPost = await this.postForPoll(poll);
-    const vote = [];
-    const titleElement = 'title'; //poll.title;
-
-    //console.log('buildPollAttrs pollPost', pollPost);
+    const pollObj = EmberObject.create(poll);
+    const polls_votes = pollPost.get('polls_votes') || {};
+    const vote = polls_votes[pollName];
+    const titleElement = poll.post_topic_title;
 
     const attrs = {
       id: `${pollName}-${pollPost.id}`,
       post: pollPost,
-      poll: EmberObject.create(poll),
+      poll: pollObj,
       vote,
       hasSavedVote: vote.length > 0,
       titleHTML: titleElement, //titleElement?.outerHTML,
@@ -61,6 +60,8 @@ export default class PollListItemWidgetComponent extends Component {
       //_postCookedWidget: helper.widget,
     };
 
+    //console.log('attrs', attrs);
+
     return attrs;
   }
 
@@ -68,14 +69,17 @@ export default class PollListItemWidgetComponent extends Component {
   async loadPollAttributes() {
     this.isFetchingPollAttributes = true;
     try {
-      const attr = await Promise.all(this.polls.map(
-        (pollHash) => this.buildPollAttrs(pollHash)
-      ));
-      //console.log('loadPollAttributes pollAttributes', attr);
+      const attr = await Promise.all(
+        this.polls.map((pollHash) =>
+          this.buildPollAttrs(pollHash)
+        )
+      );
+
       setProperties(this, {
         pollAttributes: attr,
         isFetchingPollAttributes: false,
       });
+
     } catch (error) {
       console.error("Error loading poll attributes:", error);
       this.isFetchingPollAttributes = false;
@@ -83,10 +87,8 @@ export default class PollListItemWidgetComponent extends Component {
   }
 
   updatePollAttributes() {
-    //console.log('calling pollAttributes result');
     this.pollUpdated = false;
     return this.buildPollAttrs(this.poll).then((result) => {
-      //console.log('finished pollAttributes result', result);
       this.pollUpdated = true;
       this.pollAttributes = result;
       return result;
@@ -95,22 +97,20 @@ export default class PollListItemWidgetComponent extends Component {
 
   @action
   onDidInsert() {
-    //console.log('ondidinsert');
     this.updatePollAttributes();
   }
 
   <template>
     <div class='poll-list-item-widget' {{didInsert this.onDidInsert}}>
       {{#if this.poll}}
-        <p>{{this.poll.post_topic_title}} [{{this.poll.name}}]</p>
         {{#if this.pollUpdated}}
         <div class="poll-outer" data-poll-name={{this.poll.name}} data-poll-type={{this.poll.type}}>
           <div class="poll">
-          <PollSimple @attrs={{this.pollAttributes}} />
+            <PollSimple @attrs={{this.pollAttributes}} />
           </div>
         </div>
         {{else}}
-        <p>Poll preparing</p>
+        <p>Updating poll...</p>
         {{/if}}
       {{else}}
         <p>Loading poll...</p>
