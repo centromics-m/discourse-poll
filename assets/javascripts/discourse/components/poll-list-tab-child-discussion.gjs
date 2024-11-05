@@ -18,8 +18,6 @@ export default class PostListTabChildDiscussionComponent extends Component {
   static #postCache = new Map();
 
   @action initdata() {
-    //console.log('this.args', this.args);
-    //console.log("this.args.postId", this.args.postId);
     this.fetchPosts(this.args.postId);
   }
 
@@ -34,7 +32,8 @@ export default class PostListTabChildDiscussionComponent extends Component {
 
     // firstly filter comments by reply_to_post_number
     let firstLevelPosts = allPosts.filter(
-      (p) => p.reply_to_post_number === null
+      //(p) => p.reply_to_post_number === null  // 댓글이 아닌것 개수
+      (p) => p.post_number > 1 // that post_number is not first
     );
 
     // sort by created_at
@@ -44,8 +43,8 @@ export default class PostListTabChildDiscussionComponent extends Component {
 
     // decorate posts
     firstLevelPosts.forEach((p) => {
-      p.created_date = this._dateString(post.created_at);
-      p.cooked_truncated = this._truncateString(this._stripHtmlTags(post.cooked, 80));
+      p.created_date = this._dateString(p.created_at);
+      p.cooked_truncated = this._truncateString(this._stripHtmlTags(p.cooked), 120);
     });
 
     this.comments = firstLevelPosts;
@@ -104,7 +103,7 @@ export default class PostListTabChildDiscussionComponent extends Component {
         {{/each}}
       </ul>
        <DButton class="widget-button" @action={{fn this.onPostPageClicked @postId}}>
-        {{i18n "poll.poll_list_widget.goto_comment"}}
+        {{i18n "poll.poll_list_widget.goto_topic"}}
        </DButton>
     </div>
   </template>

@@ -130,4 +130,4 @@ ko:
         tab_leaderboard: '점수'
 
       poll_list_widget:
-        goto_comment: 'Go to comment'
+        goto_topic: '본문으로 이동'

@@ -36,6 +36,7 @@ export default class PollListWidgetComponent extends Component {
   async loadCurrentCategory() {
     this.currentCategory = await Category.findById(this.categoryId);
   }
+
   // Fetch and update polls
   get getPolls() {
     return this.pollsService.polls;

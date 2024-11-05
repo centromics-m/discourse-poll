@@ -172,4 +172,4 @@ en:
         tab_leaderboard: "leaderboard"
 
       poll_list_widget:
-        goto_comment: 'Go to comment'
+        goto_topic: 'Go to topic'

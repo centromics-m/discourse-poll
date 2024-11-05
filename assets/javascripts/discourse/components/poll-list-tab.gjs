@@ -44,7 +44,8 @@ export default class PollListTabComponent extends Component {
 
     // firstly filter comments by reply_to_post_number
     let firstLevelPosts = allPosts.filter(
-      (p) => p.reply_to_post_number === null
+      //(p) => p.reply_to_post_number === null  // 댓글이 아닌것 개수
+      (p) => p.post_number > 1 // that post_number is not first
     );
 
     this.commentCount = firstLevelPosts.length;
