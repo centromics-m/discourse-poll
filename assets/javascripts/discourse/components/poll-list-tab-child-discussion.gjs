@@ -3,6 +3,7 @@ import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import { on } from "@ember/modifier";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import didUpdate from "@ember/render-modifiers/modifiers/did-update";
 import DButton from "discourse/components/d-button";
@@ -11,20 +12,20 @@ import Topic from "discourse/models/topic";
 
 // param: @postId
 export default class PostListTabChildDiscussionComponent extends Component {
-  //@service currentUser;
-  @service store;
   @service pollsService;
   @tracked comments = null;
 
+  static #postCache = new Map();
+
   @action initdata() {
     //console.log('this.args', this.args);
-    console.log("this.args.postId", this.args.postId);
+    //console.log("this.args.postId", this.args.postId);
     this.fetchPosts(this.args.postId);
   }
 
   async fetchPosts(postId) {
-    // const post = await this.store.find("post", postId);
-    const post = await this.pollsService.fetchPostById(postId);
+    //const post = await this.pollsService.fetchPostById(postId);
+    const post = await this._fetchPostWithCache(postId);
     const topicId = post.topic_id;
 
     // extract post for the topic
@@ -44,12 +45,15 @@ export default class PostListTabChildDiscussionComponent extends Component {
     // decorate posts
     firstLevelPosts.forEach((p) => {
       p.created_date = this._dateString(post.created_at);
-      p.cooked_truncated = this._truncateString(
-        this._stripHtmlTags(post.cooked)
-      );
+      p.cooked_truncated = this._truncateString(this._stripHtmlTags(post.cooked, 80));
     });
 
     this.comments = firstLevelPosts;
+  }
+
+  @action
+  onPostPageClicked(postId) {
+    this._onPostPageClicked(postId);
   }
 
   _truncateString(str, len = 40) {
@@ -67,16 +71,41 @@ export default class PostListTabChildDiscussionComponent extends Component {
     return html.replace(/<\/?[^>]+(>|$)/g, "");
   }
 
+  async _fetchPostWithCache(postId) {
+    //console.log('postCache', this.postCache);
+    const cacheEntry = PostListTabChildDiscussionComponent.#postCache.get(postId);
+    const now = Date.now();
+
+    // 10분(600,000ms) 이내에 캐싱된 데이터가 있다면 사용
+    if (cacheEntry && (now - cacheEntry.timestamp < 600000)) {
+      return cacheEntry.data;
+    }
+
+    // 그렇지 않다면 새로 가져와 캐시에 저장
+    const post = await this.pollsService.fetchPostById(postId);
+    PostListTabChildDiscussionComponent.#postCache.set(postId, { data: post, timestamp: now });
+    return post;
+  }
+
+  async _onPostPageClicked(postId) {
+    //const post = await this.pollsService.fetchPostById(postId);
+    const post = await this._fetchPostWithCache(postId);
+    const url = '/t/' + post.topic_slug;
+    document.location.href = url;
+  }
+
   <template>
     <div class="post-list" {{didInsert this.initdata}}>
       <ul>
         {{#each this.comments as |post|}}
           <li>
-            [{{post.created_date}}]
-            {{post.cooked_truncated}}
+            [{{post.created_date}}] {{post.cooked_truncated}}
           </li>
         {{/each}}
       </ul>
+       <DButton class="widget-button" @action={{fn this.onPostPageClicked @postId}}>
+        {{i18n "poll.poll_list_widget.goto_comment"}}
+       </DButton>
     </div>
   </template>
 }

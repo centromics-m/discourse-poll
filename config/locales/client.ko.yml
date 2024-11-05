@@ -114,6 +114,7 @@ ko:
           label: 설문 조사 자동 종료
         show_advanced: "고급 옵션 표시"
         hide_advanced: "고급 옵션 숨기기"
+
       admin:
         title: "투표관리"
         name: "제목"
@@ -127,3 +128,6 @@ ko:
         tab_data: '자료'
         tab_discussion: '토론'
         tab_leaderboard: '점수'
+
+      poll_list_widget:
+        goto_comment: 'Go to comment'
