@@ -16,7 +16,7 @@ import { getOwner } from "@ember/application";
 
 import PollSimple from "./poll-simple";
 
-export default class PollListItemWidget extends Component {
+export default class PollListItemWidgetComponent extends Component {
   @service router;
   @service pollsService;
   @service siteSettings;
@@ -109,16 +109,22 @@ export default class PollListItemWidget extends Component {
       {{!-- <hr>
       <p> {{{this.poll.post_topic_poll}}} </p>
       <hr> --}}
-      {{#if this.poll}}
-        <p>{{this.poll.post_topic_title}} [{{this.poll.name}}]</p>
-        {{#if this.pollUpdated}}
-        <PollSimple @attrs={{this.pollAttributes}} />
+
+        {{#if this.poll}}
+          <p>{{this.poll.post_topic_title}} [{{this.poll.name}}]</p>
+          {{#if this.pollUpdated}}
+          <div class="poll-outer" data-poll-name={{this.poll.name}} data-poll-type={{this.poll.type}}>
+            <div class="poll">
+            <PollSimple @attrs={{this.pollAttributes}} />
+            </div>
+          </div>
+          {{else}}
+          <p>Poll preparing</p>
+          {{/if}}
         {{else}}
-        <p>Poll preparing</p>
+          <p>Loading poll...</p>
         {{/if}}
-      {{else}}
-        <p>Loading poll...</p>
-      {{/if}}
+
     </div>
   </template>
 }

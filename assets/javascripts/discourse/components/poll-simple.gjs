@@ -160,8 +160,7 @@ export default class PollSimpleComponent extends Component {
   }
 
   get topicArchived() {
-    //return this.post.get("topic.archived");
-    return "topicArchived";
+    return this.post.get("topic.archived");
   }
 
   get isRankedChoice() {
@@ -169,14 +168,6 @@ export default class PollSimpleComponent extends Component {
   }
 
   get staffOnly() {
-    // console.log('this.args', this.args);
-    // console.log('this.args.attrs', this.args.attrs);
-    // console.log('this.args.attrs.poll', this.args.attrs.poll);
-    // console.log('this.args.attrs.post', this.args.attrs.post);
-    // console.log(this.args.outletArgs);
-    // //console.log(this.args.outletArgs.poll); // -> this.args.outletArgs.poll undefined
-    // console.log(this.poll);
-    // return true;
     return this.poll.results === STAFF_ONLY;
   }
 
@@ -198,16 +189,7 @@ export default class PollSimpleComponent extends Component {
   // }
 
   get status() {
-    // console.log('this.attrs', this.attrs); //this.args.attrs.then((resp) => { return resp; }));
-    // console.log('this.attrs.poll', this.attrs.poll); //this.args.attrs.then((resp) => { return resp; }));
-    // console.log('this.poll.get', this.poll);
-
-    // if(this.poll && this.poll.get)
-    //return this.poll.get("status");
-    // else
-    //   return this.poll.status;
-    //return this.poll.status;
-    return true;
+    return this.poll.get("status");
   }
 
   @action
@@ -258,8 +240,6 @@ export default class PollSimpleComponent extends Component {
   }
 
   get options() {
-    //console.log('ptinos this.poll.get options', this.poll);
-
     let enrichedOptions = this.poll.get("options");
 
     if (this.isRankedChoice) {
