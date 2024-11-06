@@ -20,12 +20,16 @@ export default class PollListTabComponent extends Component {
     return this.args.poll.post_id;
   }
 
+  get voters() {
+    return this.args.poll.voters;
+  }
+
   get tabs() {
     let tabs = [
       { id: "tab1", label: i18n("poll.admin.tab_overview"), badge: null },
       { id: "tab2", label: i18n("poll.admin.tab_data"), badge: null },
       { id: "tab3", label: i18n("poll.admin.tab_discussion"), badge: this.commentCount },
-      { id: "tab4", label: i18n("poll.admin.tab_leaderboard"), badge: null },
+      { id: "tab4", label: i18n("poll.admin.tab_leaderboard"), badge: this.voters },
     ];
     return tabs;
   }
@@ -87,7 +91,6 @@ export default class PollListTabComponent extends Component {
         {{/if}}
 
         {{#if (this.isActiveTab this.selectedTab "tab4")}}
-          <p>Content for Tab 4</p>
         {{/if}}
       </div>
     </div>
