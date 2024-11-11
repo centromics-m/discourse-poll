@@ -99,6 +99,10 @@
         padding: 24px;
         margin: 0.5rem 0 1rem 0;
     }
+
+
+    .voter-list ul {}
+    .voter-list li {list-style:none}
     .item .card-panel {
         margin: 0;
         margin: 2rem 0 0 1.5rem;
@@ -148,10 +152,25 @@
     .open-date:after {
         content: " ~ ";
     }
+
+  .close-percentage {
+    display: none;
+  }
 }
 
 @media (min-width: 1200px) {
-    .close-date:before {
+    .close-percentage {
+      position: relative;
+      border-bottom: 3px solid #666;
+      width: 400px;
+      height: 10px;
+      margin:0 20px;
+      top: -5px;
+      display: inline-block;
+      line-height:100%;
+    }
+    .close-percentage:after {
+        position: absolute;
         background: #fff;
         border: 3px solid #666;
         border-radius: 50%;
@@ -159,19 +178,10 @@
         height: 10px;
         display: inline-block;
         content: "";
-        position: relative;
         z-index: 3;
-        left: -15px;
+        top: 4px;
+        right: -15px;
         margin-right: 0.5rem;
-    }
-    .open-date:after {
-        border-top: 2px solid #666;
-        padding-right: 65%;
-        margin-left: 2%;
-        content: "";
-        position: relative;
-        z-index: 1;
-        top: 1rem;
     }
 }
 

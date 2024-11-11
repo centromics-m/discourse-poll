@@ -8,6 +8,7 @@ import { service } from "@ember/service";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import didUpdate from "@ember/render-modifiers/modifiers/did-update";
 import PollListTabChildDiscussion from "./poll-list-tab-child-discussion";
+import PollListTabVoter from "./poll-list-tab-voter";
 import Topic from "discourse/models/topic";
 
 // args: @poll
@@ -29,7 +30,7 @@ export default class PollListTabComponent extends Component {
       { id: "tab1", label: i18n("poll.admin.tab_overview"), badge: null },
       { id: "tab2", label: i18n("poll.admin.tab_data"), badge: null },
       { id: "tab3", label: i18n("poll.admin.tab_discussion"), badge: this.commentCount },
-      { id: "tab4", label: i18n("poll.admin.tab_leaderboard"), badge: this.voters },
+      { id: "tab4", label: i18n("poll.admin.tab_voters"), badge: this.voters },
     ];
     return tabs;
   }
@@ -76,21 +77,18 @@ export default class PollListTabComponent extends Component {
           </li>
         {{/each}}
       </ul>
-
       <div class="tab-content">
         {{#if (this.isActiveTab this.selectedTab "tab1")}}
           {{{@poll.post_topic_overview}}}
         {{/if}}
-
         {{#if (this.isActiveTab this.selectedTab "tab2")}}
           {{{@poll.poll_data_link}}}
         {{/if}}
-
         {{#if (this.isActiveTab this.selectedTab "tab3")}}
           <PollListTabChildDiscussion @postId={{@poll.post_id}} />
         {{/if}}
-
         {{#if (this.isActiveTab this.selectedTab "tab4")}}
+          <PollListTabVoter @options={{@poll.options}} @preloaded_voters={{@poll.preloaded_voters}}  />
         {{/if}}
       </div>
     </div>

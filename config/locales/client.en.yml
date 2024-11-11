@@ -170,6 +170,7 @@ en:
         tab_data: "data"
         tab_discussion: "discussion"
         tab_leaderboard: "leaderboard"
+        tab_voters: 'voters'
 
       poll_list_widget:
         goto_topic: 'Go to topic'

@@ -128,6 +128,7 @@ ko:
         tab_data: '자료'
         tab_discussion: '토론'
         tab_leaderboard: '점수'
+        tab_voters: '투표자'
 
       poll_list_widget:
         goto_topic: '본문으로 이동'

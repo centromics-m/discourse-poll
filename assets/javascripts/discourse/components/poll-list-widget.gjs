@@ -130,7 +130,11 @@ export default class PollListWidgetComponent extends Component {
                 <div class="card-panel">
                   <h3 class="item-date">
                     {{(this.getOpenDateFormat poll.created_at)}}
-                    {{if poll.close (this.getCloseDateFormat poll.close)}}</h3>
+                    {{#if poll.close}}
+                    <span class="close-percentage" data=""></span>
+                    {{this.getCloseDateFormat poll.close}}
+                   {{/if}}
+                   </h3>
                   <div class='poll-list-widget-wrap'>
                     {{!-- {{{poll.post_topic_poll}}} --}}
                     <PollListItemWidget @poll={{poll}} />

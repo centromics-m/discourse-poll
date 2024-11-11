@@ -7,9 +7,7 @@ export default class AdminPluginsPolls extends DiscourseRoute {
     if (!this.currentUser?.admin) {
       return { model: null };
     }
-
     //return [{id: 1, title: 'Grand Old Mansion',period: 'Veruca Salt'},{id: 2,title: 'asdgsdg', period: 'asdg'}];
-
 
     return ajax("/polls/poll_admin_list.json").then((model) => {
       return model;
