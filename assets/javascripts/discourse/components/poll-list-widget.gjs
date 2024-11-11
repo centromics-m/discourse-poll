@@ -105,6 +105,36 @@ export default class PollListWidgetComponent extends Component {
     return str;
   }
 
+    datePercentage(startDate, endDate) {
+
+  const d1 = new Date(startDate);
+  const d2 = new Date(endDate);
+
+  const timeDifference = Math.abs(d2 - d1);
+
+  const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+
+  const d3 = new Date(startDate);
+  const d4 = new Date();
+
+  const timeDifference2 = Math.abs(d4 - d3);
+  const dayDifference2 = Math.ceil(timeDifference2 / (1000 * 60 * 60 * 24));
+
+  const numValue = Number(dayDifference2);
+  const numTotal = Number(dayDifference);
+
+  console.log(numValue)
+  console.log(numTotal)
+
+  if (isNaN(numValue) || isNaN(numTotal) || numTotal === 0) {
+    return 0;
+  }
+
+  const percentage = (numValue / numTotal) * 100;
+  return Math.round(percentage);
+    }
+
   <template>
     {{#if this.showInFrontend}}
       <div class="poll-widget-main" {{didInsert this.fetchPolls}}>
@@ -131,7 +161,9 @@ export default class PollListWidgetComponent extends Component {
                   <h3 class="item-date">
                     {{(this.getOpenDateFormat poll.created_at)}}
                     {{#if poll.close}}
-                    <span class="close-percentage" data=""></span>
+                    <span class="close-percentage" data="">
+                      <span class="arrow" style="left: {{this.datePercentage poll.created_at poll.close}}%">&nbsp;</span>
+                    </span>
                     {{this.getCloseDateFormat poll.close}}
                    {{/if}}
                    </h3>
