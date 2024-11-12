@@ -11,7 +11,7 @@ import i18n from "discourse-common/helpers/i18n";
 import Topic from "discourse/models/topic";
 
 // param: @postId
-export default class PostListTabChildDiscussionComponent extends Component {
+export default class PostListTabDiscussionComponent extends Component {
   @service pollsService;
   @tracked comments = null;
 
@@ -72,7 +72,7 @@ export default class PostListTabChildDiscussionComponent extends Component {
 
   async _fetchPostWithCache(postId) {
     //console.log('postCache', this.postCache);
-    const cacheEntry = PostListTabChildDiscussionComponent.#postCache.get(postId);
+    const cacheEntry = PostListTabDiscussionComponent.#postCache.get(postId);
     const now = Date.now();
 
     // 10분(600,000ms) 이내에 캐싱된 데이터가 있다면 사용
@@ -82,7 +82,7 @@ export default class PostListTabChildDiscussionComponent extends Component {
 
     // 그렇지 않다면 새로 가져와 캐시에 저장
     const post = await this.pollsService.fetchPostById(postId);
-    PostListTabChildDiscussionComponent.#postCache.set(postId, { data: post, timestamp: now });
+    PostListTabDiscussionComponent.#postCache.set(postId, { data: post, timestamp: now });
     return post;
   }
 

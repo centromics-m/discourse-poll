@@ -7,7 +7,7 @@ import i18n from "discourse-common/helpers/i18n";
 import { service } from "@ember/service";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
 import didUpdate from "@ember/render-modifiers/modifiers/did-update";
-import PollListTabChildDiscussion from "./poll-list-tab-child-discussion";
+import PollListTabDiscussion from "./poll-list-tab-discussion";
 import PollListTabVoter from "./poll-list-tab-voter";
 import Topic from "discourse/models/topic";
 
@@ -35,7 +35,8 @@ export default class PollListTabComponent extends Component {
     return tabs;
   }
 
-  @action initData() {
+  @action 
+  initData() {
     //console.log("this.args.postId", this.postId);
     this.updateCommentCount(this.postId);
   }
@@ -85,7 +86,7 @@ export default class PollListTabComponent extends Component {
           {{{@poll.poll_data_link}}}
         {{/if}}
         {{#if (this.isActiveTab this.selectedTab "tab3")}}
-          <PollListTabChildDiscussion @postId={{@poll.post_id}} />
+          <PollListTabDiscussion @postId={{@poll.post_id}} />
         {{/if}}
         {{#if (this.isActiveTab this.selectedTab "tab4")}}
           <PollListTabVoter @options={{@poll.options}} @preloaded_voters={{@poll.preloaded_voters}}  />

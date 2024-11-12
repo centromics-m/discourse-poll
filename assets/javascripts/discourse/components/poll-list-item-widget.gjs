@@ -44,7 +44,7 @@ export default class PollListItemWidgetComponent extends Component {
     const pollPost = await this.postForPoll(poll);
     const pollObj = EmberObject.create(poll);
     const polls_votes = pollPost.get('polls_votes') || {};
-    const vote = polls_votes[pollName];
+    const vote = polls_votes[pollName] || [];
     const titleElement = poll.post_topic_title;
 
     const attrs = {
@@ -110,10 +110,10 @@ export default class PollListItemWidgetComponent extends Component {
           </div>
         </div>
         {{else}}
-        <p>Updating poll...</p>
+        <p><span class='loading'>Updating poll...</span></p>
         {{/if}}
       {{else}}
-        <p>Loading poll...</p>
+        <p><span class='loading'>Loading poll...</span></p>
       {{/if}}
     </div>
   </template>
