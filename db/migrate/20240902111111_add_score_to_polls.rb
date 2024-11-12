@@ -2,6 +2,6 @@
 
 class AddScoreToPolls < ActiveRecord::Migration[7.0]
   def change
-    add_column :polls, :score, :integer, null: false, default: 100
+    add_column :polls, :score, :integer #, null: false, default: 100
   end
 end
