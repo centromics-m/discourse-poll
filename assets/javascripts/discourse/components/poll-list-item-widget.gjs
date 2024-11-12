@@ -14,7 +14,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 import { bind, observes } from "discourse-common/utils/decorators";
 import { getOwner } from "@ember/application";
 
-import PollSimple from "./poll-simple";
+import Poll from "./poll";
 
 export default class PollListItemWidgetComponent extends Component {
   @service router;
@@ -106,7 +106,7 @@ export default class PollListItemWidgetComponent extends Component {
         {{#if this.pollUpdated}}
         <div class="poll-outer" data-poll-name={{this.poll.name}} data-poll-type={{this.poll.type}}>
           <div class="poll">
-            <PollSimple @attrs={{this.pollAttributes}} />
+            <Poll @attrs={{this.pollAttributes}} />
           </div>
         </div>
         {{else}}
