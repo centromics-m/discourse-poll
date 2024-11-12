@@ -133,7 +133,7 @@ export default class PollListWidgetComponent extends Component {
 
   const percentage = (numValue / numTotal) * 100;
 
-  return_value=Math.round(percentage);
+  let return_value=Math.round(percentage);
 
   if(return_value>=95) {
     return_value=95;
