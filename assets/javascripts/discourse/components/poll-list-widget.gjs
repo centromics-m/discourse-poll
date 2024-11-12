@@ -46,12 +46,12 @@ export default class PollListWidgetComponent extends Component {
   fetchPolls(element) {
     this.getPolls.then((result) => {
       let polls = result.polls.filter((poll) => poll.public === true);
-      polls = polls.map((poll) => {
-        return {
-          ...poll,
-          post_topic_title_truncated: this._truncateString(poll.post_topic_title, 45),
-        };
-      });
+      // polls = polls.map((poll) => {
+      //   return {
+      //     ...poll,
+      //     post_topic_title_truncated: this.truncateString(poll.post_topic_title, 45),
+      //   };
+      // });
       if (polls.length > 0) {
         this.poll = polls[0];
       }
@@ -94,51 +94,51 @@ export default class PollListWidgetComponent extends Component {
     return this.isFrontpage && this.siteSettings.poll_show_in_frontpage;
   }
 
-  dateFormat(date_o) {
+  dateFormat(date_o) {    
+    if(date_o === undefined)
+      return '';
     return new Date(date_o).toLocaleDateString(I18n.currentLocale(), dateOptions);
   }
 
-  _truncateString(str, len = 40) {
+  truncateString(str, len = 40) {
     if (str.length > len) {
       return str.slice(0, len) + "...";
     }
     return str;
   }
 
-    datePercentage(startDate, endDate) {
+  datePercentage(startDate, endDate) {
+    const d1 = new Date(startDate);
+    const d2 = new Date(endDate);
 
-  const d1 = new Date(startDate);
-  const d2 = new Date(endDate);
+    const timeDifference = Math.abs(d2 - d1);
+    const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 
-  const timeDifference = Math.abs(d2 - d1);
+    const d3 = new Date(startDate);
+    const d4 = new Date();
 
-  const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    const timeDifference2 = Math.abs(d4 - d3);
+    const dayDifference2 = Math.ceil(timeDifference2 / (1000 * 60 * 60 * 24));
 
+    const numValue = Number(dayDifference2);
+    const numTotal = Number(dayDifference);
 
-  const d3 = new Date(startDate);
-  const d4 = new Date();
+    // console.log(numValue)
+    // console.log(numTotal)
 
-  const timeDifference2 = Math.abs(d4 - d3);
-  const dayDifference2 = Math.ceil(timeDifference2 / (1000 * 60 * 60 * 24));
+    if (isNaN(numValue) || isNaN(numTotal) || numTotal === 0) {
+      return 0;
+    }
 
-  const numValue = Number(dayDifference2);
-  const numTotal = Number(dayDifference);
+    const percentage = (numValue / numTotal) * 100;
 
-  console.log(numValue)
-  console.log(numTotal)
+    return_value = Math.round(percentage);
 
-  if (isNaN(numValue) || isNaN(numTotal) || numTotal === 0) {
-    return 0;
-  }
+    if(return_value >= 95) {
+      return_value = 95;
+    }
 
-  const percentage = (numValue / numTotal) * 100;
-
-  return_value=Math.round(percentage);
-
-  if(return_value>=95) {
-    return_value=95;
-  }
-  return return_value;
+    return return_value;
  }
 
   <template>
@@ -162,16 +162,17 @@ export default class PollListWidgetComponent extends Component {
               <article class="item">
                 <i class="vertical-line"></i>
                 <h2 class="card-title">
-                  <a href="{{poll.post_url}}">{{poll.post_topic_title_truncated}}{{if poll.title poll.title}}</a></h2>
+                  <a href="{{poll.post_url}}">{{this.truncateString poll.post_topic_title 45}}{{if poll.title poll.title}}</a>
+                </h2>
                 <div class="card-panel">
                   <h3 class="item-date">
                     {{(this.getOpenDateFormat poll.created_at)}}
                     {{#if poll.close}}
-                    <span class="close-percentage" data="">
-                      <span class="arrow" style="left: {{this.datePercentage poll.created_at poll.close}}%">&nbsp;</span>
-                    </span>
-                    {{this.getCloseDateFormat poll.close}}
-                   {{/if}}
+                      <span class="close-percentage" data="">
+                        <span class="arrow" style="left: {{this.datePercentage poll.created_at poll.close}}%">&nbsp;</span>
+                      </span>
+                      {{this.getCloseDateFormat poll.close}}
+                    {{/if}}
                    </h3>
                   <div class='poll-list-widget-wrap'>
                     {{!-- {{{poll.post_topic_poll}}} --}}
