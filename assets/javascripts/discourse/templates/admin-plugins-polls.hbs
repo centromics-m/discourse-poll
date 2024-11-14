@@ -12,7 +12,7 @@
         {{#each @model.polls as |poll|}}
           <tr id={{concat "poll-admin__row-" poll.id}}>
             <td>
-                {{poll.title}}
+              {{poll.post_topic_title}} {{poll.title}}
             </td>
             <td>
               {{poll.public}}
