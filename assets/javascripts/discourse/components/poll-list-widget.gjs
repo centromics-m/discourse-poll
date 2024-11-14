@@ -94,7 +94,7 @@ export default class PollListWidgetComponent extends Component {
     return this.isFrontpage && this.siteSettings.poll_show_in_frontpage;
   }
 
-  dateFormat(date_o) {    
+  dateFormat(date_o) {
     if(date_o === undefined)
       return '';
     return new Date(date_o).toLocaleDateString(I18n.currentLocale(), dateOptions);
@@ -132,7 +132,7 @@ export default class PollListWidgetComponent extends Component {
 
     const percentage = (numValue / numTotal) * 100;
 
-    return_value = Math.round(percentage);
+    let return_value = Math.round(percentage);
 
     if(return_value >= 95) {
       return_value = 95;
