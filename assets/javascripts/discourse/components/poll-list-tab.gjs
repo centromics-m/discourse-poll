@@ -35,7 +35,7 @@ export default class PollListTabComponent extends Component {
     return tabs;
   }
 
-  @action 
+  @action
   initData() {
     //console.log("this.args.postId", this.postId);
     this.updateCommentCount(this.postId);
@@ -86,7 +86,7 @@ export default class PollListTabComponent extends Component {
           {{{@poll.poll_data_link}}}
         {{/if}}
         {{#if (this.isActiveTab this.selectedTab "tab3")}}
-          <PollListTabDiscussion @postId={{@poll.post_id}} />
+          <PollListTabDiscussion @postId={{@poll.post_id}} @poll={{@poll}}/>
         {{/if}}
         {{#if (this.isActiveTab this.selectedTab "tab4")}}
           <PollListTabVoter @options={{@poll.options}} @preloaded_voters={{@poll.preloaded_voters}}  />
