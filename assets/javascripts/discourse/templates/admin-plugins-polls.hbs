@@ -1,49 +1,56 @@
 <section class="discourse-polls">
   <article class="polls">
     {{#if @model}}
-      <table>
-        <thead>
+    <table>
+      <thead>
+        <th>id</th>
         <th>{{i18n "poll.admin.name"}}</th>
-        <th>{{i18n "poll.admin.period"}}</th>
-        <th></th>
-        </thead>
-
-        <tbody>
+        {{!-- <th>{{i18n "poll.admin.period"}}</th> --}}
+        <th>title</th>
+        <th>post_topic_title</th>
+        <th>status</th>
+        <th>voters</th>
+        <th>score</th>
+        <th>created_at</th>
+        <th>action</th>
+      </thead>
+      <tbody>
         {{#each @model.polls as |poll|}}
-          <tr id={{concat "poll-admin__row-" poll.id}}>
-            <td>
-                {{poll.title}}
-            </td>
-            <td>
-              {{poll.public}}
-            </td>
-            <td style="width: 120px">
-              <div class="poll-admin__listitem-action">
-                {{i18n "poll.admin.edit"}}
-
-                <DButton
-                  class="btn-small poll-admin__delete btn-danger"
-                  @icon="trash-alt"
-                  @title="poll.admin.delete"
-                  @action={{action "destroyPoll" poll}}
-                />
-              </div>
-            </td>
-          </tr>
+        <tr id={{concat "poll-admin__row-" poll.id}}>
+          <td>{{poll.id}}</td>
+          <td>{{poll.name}}</td>
+          <td>{{poll.title}}</td>
+          <td><a href={{poll.post_url}}>{{poll.post_topic_title}}</a></td>
+          <td>{{poll.status}}</td>
+          <td>{{poll.voters}}</td>
+          <td>{{poll.score}}</td>
+          <td>{{this.formatDate poll.created_at}}</td>
+          <td style="width: 120px">
+            <div class="poll-admin__listitem-action">
+              {{!-- {{i18n "poll.admin.edit"}} --}}
+              {{!-- <LinkTo
+                    @route="adminPlugins.show.discourse-gamification-leaderboards.show"
+                    @model={{poll}}
+                    class="btn leaderboard-admin__edit btn-text btn-small"
+                  >{{i18n "gamification.edit"}} </LinkTo> --}}
+              {{!-- <DButton class="btn-small poll-admin__delete btn-danger" @icon="trash-alt" @title="poll.admin.delete"
+                @action={{action "destroyPoll" poll}} /> --}}
+            </div>
+          </td>
+        </tr>
         {{/each}}
-        </tbody>
-      </table>
+      </tbody>
+    </table>
     {{else}}
-      {{#unless creatingNew}}
-        <div class="admin-plugin-config-area__empty-list">
-          {{i18n "poll.admin.none"}}
-          <DButton
-            @label="poll.admin.cta"
-            class="btn-default btn-small poll-admin__cta-new"
-            @action={{action (mut creatingNew) true}}
-          />
-        </div>
-      {{/unless}}
+    {{#unless creatingNew}}
+    <div class="admin-plugin-config-area__empty-list">
+      {{i18n "poll.admin.none"}}
+      <DButton @label="poll.admin.cta" class="btn-default btn-small poll-admin__cta-new"
+        {{!-- @action={{action (mut creatingNew) true}}  --}}
+        @action={{action "createNew"}}
+      />
+    </div>
+    {{/unless}}
     {{/if}}
   </article>
 </section>

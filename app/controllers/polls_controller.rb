@@ -7,18 +7,28 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
   def poll_list
     if params[:category].present?
-      category=params[:category]
+      category = params[:category]
     else
-      category=4
+      category = 4
     end
 
     @polls = Poll.joins(:post).joins('INNER JOIN topics AS t ON posts.topic_id = t.id').where('t.category_id': category).order('id desc').limit(10)
-    render :json => @polls, each_serializer: PollSerializer
+    render json: @polls, each_serializer: PollSerializer
   end
 
   def poll_admin_list
-    @polls = Poll.order('id desc').limit(10)
-    render :json => @polls, each_serializer: PollSerializer
+    page = params[:page] || 1
+    pagesize = params[:pagesize] || 10
+
+    page1 = (page - 1).to_i
+    pagesize1 = pagesize.to_i
+
+    query = Poll.order('id desc')
+    total = query.clone.count
+    @polls = query.limit(pagesize1).offset(page1 * pagesize1)
+
+    render json: @polls, each_serializer: PollSerializer
+    #render json: { data: @polls.map { |p| PollSerializer.new(p).serializable_hash }, page: page, pagesize: pagesize, total: total, }
   end
 
   def vote
