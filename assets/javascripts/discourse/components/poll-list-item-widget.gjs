@@ -52,7 +52,7 @@ export default class PollListItemWidgetComponent extends Component {
       post: pollPost,
       poll: pollObj,
       vote,
-      hasSavedVote: vote.length > 0,
+      hasSavedVote: vote != null && vote.length > 0,
       titleHTML: titleElement, //titleElement?.outerHTML,
       groupableUserFields: (pollGroupableUserFields || "")
         .split("|")
