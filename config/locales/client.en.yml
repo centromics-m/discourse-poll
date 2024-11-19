@@ -166,6 +166,7 @@ en:
         cta: "먼저 투표를 생성하세요"
         none: "none"
         expectation: "expectation"
+        leaderboard: 'leaderboard'
         tab_overview: "overview"
         tab_data: "data"
         tab_discussion: "discussion"
