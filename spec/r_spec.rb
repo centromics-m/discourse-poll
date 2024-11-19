@@ -88,7 +88,9 @@ RSpec.describe 'Google Search' do
     end
 
     reply_content.clear
-    reply_content.send_keys('good good good~!')
+    reply_content.send_keys('good good good~!
+
+')
 
     d_editor_button_bar=d_editor.find_element(class: 'd-editor-button-bar')
     option_menu=d_editor_button_bar.find_element(class: 'toolbar-popup-menu-options')
