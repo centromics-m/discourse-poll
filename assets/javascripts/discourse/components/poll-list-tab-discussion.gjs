@@ -10,14 +10,15 @@ import DButton from "discourse/components/d-button";
 import i18n from "discourse-common/helpers/i18n";
 import Topic from "discourse/models/topic";
 
-// param: @postId
+// param: @postId, @poll
 export default class PostListTabDiscussionComponent extends Component {
   @service pollsService;
   @tracked comments = null;
 
   static #postCache = new Map();
 
-  @action initdata() {
+  @action
+  initdata() {
     this.fetchPosts(this.args.postId);
   }
 
@@ -50,11 +51,6 @@ export default class PostListTabDiscussionComponent extends Component {
     this.comments = firstLevelPosts;
   }
 
-  @action
-  onPostPageClicked(postId) {
-    this._onPostPageClicked(postId);
-  }
-
   _truncateString(str, len = 40) {
     if (str.length > len) {
       return str.slice(0, len) + "...";
@@ -71,7 +67,6 @@ export default class PostListTabDiscussionComponent extends Component {
   }
 
   async _fetchPostWithCache(postId) {
-    //console.log('postCache', this.postCache);
     const cacheEntry = PostListTabDiscussionComponent.#postCache.get(postId);
     const now = Date.now();
 
@@ -86,13 +81,6 @@ export default class PostListTabDiscussionComponent extends Component {
     return post;
   }
 
-  async _onPostPageClicked(postId) {
-    //const post = await this.pollsService.fetchPostById(postId);
-    const post = await this._fetchPostWithCache(postId);
-    const url = '/t/' + post.topic_slug;
-    document.location.href = url;
-  }
-
   <template>
     <div class="post-list" {{didInsert this.initdata}}>
       <ul>
@@ -102,9 +90,9 @@ export default class PostListTabDiscussionComponent extends Component {
           </li>
         {{/each}}
       </ul>
-       <DButton class="widget-button" @action={{fn this.onPostPageClicked @postId}}>
+      <a href="{{@poll.post_url}}" class='widget-button'>
         {{i18n "poll.poll_list_widget.goto_topic"}}
-       </DButton>
+      </a>
     </div>
   </template>
 }
