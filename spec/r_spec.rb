@@ -9,8 +9,8 @@ RSpec.describe 'Google Search' do
     options.add_option(:detach, true) # 이 옵션을 추가
     @driver = Selenium::WebDriver.for :chrome, options: options
 
-    @id = 'toughjjh@gmail.com'
-    @passwd = 'jjh307501!'
+    @id = ''
+    @passwd = ''
   end
 
   after(:all) do
@@ -128,6 +128,6 @@ RSpec.describe 'Google Search' do
     inputs[3].send_keys('네번째 선택 옵션')
 
 
-    # @driver.find_element(class: 'insert-poll').click
+    @driver.find_element(class: 'insert-poll').click
   end
 end
