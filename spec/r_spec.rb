@@ -9,6 +9,13 @@ def load_credentials(file_path)
   JSON.parse(file)
 end
 
+def random_string()
+  charset = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
+
+  # 길이가 10인 랜덤 문자열 생성
+  random_string = Array.new(10) { charset.sample }.join
+end
+
 RSpec.describe 'Google Search' do
   before(:all) do
     options = Selenium::WebDriver::Options.chrome
@@ -86,7 +93,7 @@ RSpec.describe 'Google Search' do
     end
 
     reply_title.clear
-    reply_title.send_keys('이것은 제목입니다. 그냥 좀 입력되라')
+    reply_title.send_keys('이것은 제목입니다. 그냥 좀 입력되라 '+random_string)
 
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     reply_content = wait.until do
@@ -117,6 +124,7 @@ RSpec.describe 'Google Search' do
   end
 
   it 'Poll Option Fill' do
+
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     poll_options = wait.until do
       element = @driver.find_element(class: 'poll-options')
@@ -138,5 +146,13 @@ RSpec.describe 'Google Search' do
 
 
     @driver.find_element(class: 'insert-poll').click
+
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    reply_area = wait.until do
+      element = @driver.find_element(class: 'reply-area')
+      element if element.displayed? && element.enabled?
+    end
+
+    reply_area.find_element(class: 'create').click
   end
 end
