@@ -2,15 +2,18 @@
 
 require 'selenium-webdriver'
 require 'rspec'
+require 'json'
+
+def load_credentials(file_path)
+  file = File.read(file_path)
+  JSON.parse(file)
+end
 
 RSpec.describe 'Google Search' do
   before(:all) do
     options = Selenium::WebDriver::Options.chrome
     options.add_option(:detach, true) # 이 옵션을 추가
     @driver = Selenium::WebDriver.for :chrome, options: options
-
-    @id = ''
-    @passwd = ''
   end
 
   after(:all) do
@@ -18,18 +21,22 @@ RSpec.describe 'Google Search' do
   end
 
   it 'Page Working' do
-    @driver.navigate.to 'http://localhost:4200'
-  end
+    credentials_file = 'credentials.json'
+    credentials = load_credentials(credentials_file)
 
-  it 'Discourse Login' do
+    @driver.navigate.to credentials['host']
+
     login_go_button = @driver.find_element(class: 'login-button')
     login_go_button.click
 
-    account_name=@driver.find_element(id: 'login-account-name')
-    password= @driver.find_element(id: 'login-account-password')
+    username_field=@driver.find_element(id: 'login-account-name')
+    password_field= @driver.find_element(id: 'login-account-password')
 
-    account_name.send_keys(@id)
-    password.send_keys(@passwd)
+    username = credentials['username']
+    password = credentials['password']
+
+    username_field.send_keys(username)
+    password_field.send_keys(password)
 
     login_button = @driver.find_element(id: 'login-button')
     login_button.click
@@ -79,7 +86,7 @@ RSpec.describe 'Google Search' do
     end
 
     reply_title.clear
-    reply_title.send_keys('이것은 제목')
+    reply_title.send_keys('이것은 제목입니다. 그냥 좀 입력되라')
 
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     reply_content = wait.until do
