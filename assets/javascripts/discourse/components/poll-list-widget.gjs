@@ -101,10 +101,11 @@ export default class PollListWidgetComponent extends Component {
   }
 
   truncateString(str, len = 40) {
-    if (str.length > len) {
+    if(!str)
+      return str;
+    else if (str.length > len) {
       return str.slice(0, len) + "...";
     }
-    return str;
   }
 
   datePercentage(startDate, endDate) {

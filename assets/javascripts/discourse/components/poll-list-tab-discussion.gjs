@@ -52,10 +52,11 @@ export default class PostListTabDiscussionComponent extends Component {
   }
 
   _truncateString(str, len = 40) {
-    if (str.length > len) {
+    if(!str)
+      return str;
+    else if (str.length > len) {
       return str.slice(0, len) + "...";
     }
-    return str;
   }
 
   _dateString(datetime) {
