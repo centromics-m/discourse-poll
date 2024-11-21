@@ -16,10 +16,25 @@ def random_string()
   random_string = Array.new(10) { charset.sample }.join
 end
 
-RSpec.describe 'Google Search' do
+def generate_random_email
+  username = SecureRandom.alphanumeric(8) # 8글자 길이의 랜덤 사용자 이름 생성
+  domain = %w[gmail.com yahoo.com outlook.com example.com].sample # 도메인 목록 중 랜덤 선택
+  "#{username}@#{domain}"
+end
+
+
+RSpec.describe 'Discourse Poll Test' do
   before(:all) do
     options = Selenium::WebDriver::Options.chrome
     options.add_option(:detach, true) # 이 옵션을 추가
+
+    credentials_file = 'credentials.json'
+    credentials = load_credentials(credentials_file)
+
+    @host=credentials['host']
+    @admin_username = credentials['username']
+    @admin_password = credentials['password']
+
     @driver = Selenium::WebDriver.for :chrome, options: options
   end
 
@@ -28,34 +43,77 @@ RSpec.describe 'Google Search' do
   end
 
   it 'Page Working' do
-    credentials_file = 'credentials.json'
-    credentials = load_credentials(credentials_file)
+    @driver.navigate.to @host
+  end
 
-    @driver.navigate.to credentials['host']
+  it '10 New User Sign Up' do
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    sign_up_button = wait.until do
+      element=@driver.find_element(class: 'sign-up-button')
+      element if element.displayed? && element.enabled?
+    end
+    sign_up_button.click
 
-    login_go_button = @driver.find_element(class: 'login-button')
+    login_left_side = wait.until do
+      element=@driver.find_element(class: 'login-left-side')
+      element if element.displayed? && element.enabled?
+    end
+
+    login_form = wait.until { login_left_side.find_element(id: 'login-form')}
+
+    email_field=login_form.find_element(id: 'new-account-email')
+    username_field=login_form.find_element(id: 'new-account-username')
+    password_field=login_form.find_element(id: 'new-account-password')
+    name_field=login_form.find_element(id: 'new-account-name')
+
+    email_field.send_keys(generate_random_email)
+    username_field.send_keys(random_string)
+    password_field.send_keys(random_string)
+    name_field.send_keys('자동생성 테스트 유저 1')
+
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    wait.until do
+      element1 = login_form.find_element(id: "username-validation")
+      classes1=element1.attribute("class")
+
+      element2 = login_form.find_element(id: "password-validation")
+      classes2=element2.attribute("class")
+
+      element3 = login_form.find_element(id: "account-email-validation")
+      classes3=element3.attribute("class")
+
+      classes1.split.include?("good") && classes2.split.include?("good") && classes3.split.include?("good")
+    end
+
+    login_left_side.find_element(class: 'btn-primary').click
+
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    wait.until { @driver.current_url == @host+'/u/account-created' }
+  end
+
+  it 'Admin Login' do
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    login_go_button = wait.until { @driver.find_element(class: 'login-button') }
     login_go_button.click
 
     username_field=@driver.find_element(id: 'login-account-name')
     password_field= @driver.find_element(id: 'login-account-password')
 
-    username = credentials['username']
-    password = credentials['password']
-
-    username_field.send_keys(username)
-    password_field.send_keys(password)
+    username_field.send_keys(@admin_username)
+    password_field.send_keys(@admin_password)
 
     login_button = @driver.find_element(id: 'login-button')
     login_button.click
 
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     admin_go_button = wait.until { @driver.find_element(id: 'toggle-hamburger-menu') }
+
     expect(admin_go_button.displayed?).to be true
   end
 
+
   it 'Go Category' do
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
-
     wait.until do
       elements = @driver.find_elements(class: 'd-modal__backdrop')
       elements.empty?
