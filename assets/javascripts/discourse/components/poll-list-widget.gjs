@@ -56,7 +56,7 @@ export default class PollListWidgetComponent extends Component {
         this.poll = polls[0];
       }
       this.polls = polls;
-      console.log("Fetched polls:", polls);
+      //console.log("Fetched polls:", polls);
     });
   }
 

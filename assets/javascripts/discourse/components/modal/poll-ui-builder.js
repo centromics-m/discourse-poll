@@ -457,7 +457,7 @@ export default class PollUiBuilderModal extends Component {
     if (atIndex === -1) {
       atIndex = this.pollDataLinks.length;
     }
-    console.log('2');
+
     const dataLink = EmberObject.create({ url: "", title: "", content: ""});
     this.pollDataLinks.insertAt(atIndex, dataLink);
   }

@@ -20,6 +20,12 @@
         top: 0;
         right: 0;
     }
+
+  .poll-category-more a {
+    line-height:120%;
+    display:block;
+    }
+
     h1,
     h2,
     h3,
@@ -156,6 +162,19 @@
     border-bottom: 8px solid transparent;
     border-left: 16px solid white; /* 화살표 색상 */
   }
+}
+
+
+@media (max-width: 450px) {
+  .poll-widget-main h1 {margin-top:1rem;font-size:1rem}
+  .poll-widget-main h1>span {padding: 1rem}
+  .poll-widget-main .poll-category-more {top:70px}
+  .poll-widget-main .poll-category-more br {display:none;}
+  .poll-widget-main .poll-category-more a {float:right}
+  .poll-widget-main .poll-category-more a:first-child {margin-left:50px}
+
+  .poll-widget-main h2 {font-size: 1rem}
+  .poll-widget-main .item-date {font-size: 0.7rem}
 }
 
 @media (max-width: 1199px) {
