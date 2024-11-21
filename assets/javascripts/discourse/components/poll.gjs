@@ -645,7 +645,6 @@ export default class PollComponent extends Component {
       {{didUpdate this.updatedVoters @preloadedVoters}}
       class="poll-container"
     >
-      {{this.titleHTML}}
       {{#if this.notInVotingGroup}}
         <div class="alert alert-danger">{{this.pollGroups}}</div>
       {{/if}}
