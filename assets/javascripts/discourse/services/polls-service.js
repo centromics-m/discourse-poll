@@ -14,6 +14,7 @@ export default class pollsService extends Service {
   get polls() {
     return ajax("/polls/poll_list.json?category=" + this.category).then(
       (response) => {
+				//console.log(response);
         return response;
       }
     );

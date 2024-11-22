@@ -206,9 +206,13 @@ export default class PollComponent extends Component {
         },
       });
 
+      // NOTE: ajax result poll is  hash  of { poll, vote }
+
       this.hasSavedVote = true;
       this.poll.setProperties(poll);
-      this.appEvents.trigger("poll:voted", poll, this.post, this.vote);
+
+      const { poll: polldata, vote } = poll;
+      this.appEvents.trigger("poll:voted", polldata, this.post, this.vote);
 
       if (this.poll.results !== ON_CLOSE) {
         this.showResults = true;
@@ -543,6 +547,7 @@ export default class PollComponent extends Component {
             option.rank = 0;
           });
         }
+
         this.vote = Object.assign([]);
         this.hasSavedVote = false;
         this.appEvents.trigger("poll:voted", poll, this.post, this.vote);
@@ -640,6 +645,7 @@ export default class PollComponent extends Component {
         }
       });
   }
+
   <template>
     <div
       {{didUpdate this.updatedVoters @preloadedVoters}}

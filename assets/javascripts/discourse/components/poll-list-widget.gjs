@@ -19,7 +19,7 @@ const dateOptions = {
 };
 
 export default class PollListWidgetComponent extends Component {
-  @tracked poll;
+  //@tracked poll;
   @tracked polls = [];
   @tracked inFrontpage = false;
   @service router;
@@ -52,9 +52,9 @@ export default class PollListWidgetComponent extends Component {
       //     post_topic_title_truncated: this.truncateString(poll.post_topic_title, 45),
       //   };
       // });
-      if (polls.length > 0) {
-        this.poll = polls[0];
-      }
+      // if (polls.length > 0) {
+      //   this.poll = polls[0];
+      // }
       this.polls = polls;
       //console.log("Fetched polls:", polls);
     });
