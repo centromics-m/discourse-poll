@@ -130,6 +130,13 @@ ko:
         tab_discussion: '토론'
         tab_leaderboard: '점수'
         tab_voters: '투표자'
+        c_num: '번호'
+        c_title: '제목'
+        c_status: '상태'
+        c_voters: '투표자'
+        c_score: '점수'
+        c_created_at: '작성일'
+        c_manage: '관리'
 
       poll_list_widget:
         goto_topic: '본문으로 이동'

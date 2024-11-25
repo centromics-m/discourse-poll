@@ -172,6 +172,13 @@ en:
         tab_discussion: "discussion"
         tab_leaderboard: "leaderboard"
         tab_voters: 'voters'
+        c_num: 'num'
+        c_title: 'title'
+        c_status: 'status'
+        c_voters: 'voters'
+        c_score: 'score'
+        c_created_at: 'created at'
+        c_manage: 'manage'
 
       poll_list_widget:
         goto_topic: 'Go to topic'

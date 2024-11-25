@@ -21,17 +21,18 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
   def poll_admin_list
     page = params[:page] || 1
-    pagesize = params[:pagesize] || 10
+    pagesize =  10
 
-    page1 = (page - 1).to_i
+    page1 = (page.to_i - 1).to_i
     pagesize1 = pagesize.to_i
 
     query = Poll.order('id desc')
     total = query.clone.count
     @polls = query.limit(pagesize1).offset(page1 * pagesize1)
 
-    render json: @polls, each_serializer: PollSerializer
-    #render json: { data: @polls.map { |p| PollSerializer.new(p).serializable_hash }, page: page, pagesize: pagesize, total: total, }
+    total_pages = (total.to_f / pagesize).ceil
+
+    render json: { poll_list: {polls:serialize_data( @polls, PollSerializer), total_pages: total_pages, total:total } }
   end
 
   def vote

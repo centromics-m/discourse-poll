@@ -106,6 +106,8 @@ export default class PollListWidgetComponent extends Component {
     else if (str.length > len) {
       return str.slice(0, len) + "...";
     }
+
+    return str;
   }
 
   datePercentage(startDate, endDate) {
@@ -168,7 +170,7 @@ export default class PollListWidgetComponent extends Component {
               <article class="item">
                 <i class="vertical-line"></i>
                 <h2 class="card-title">
-                  <a href="{{poll.post_url}}">{{this.truncateString poll.post_topic_title 45}}{{if poll.title poll.title}}</a>
+                  <a href="{{poll.post_url}}">{{this.truncateString poll.post_topic_title 45}}<br>{{if poll.title poll.title}}</a>
                 </h2>
                 <div class="card-panel">
                   <h3 class="item-date">
