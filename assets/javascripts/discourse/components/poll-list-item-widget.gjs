@@ -18,10 +18,10 @@ import loadingSpinner from "discourse/helpers/loading-spinner";
 import Poll from "./poll";
 
 export default class PollListItemWidgetComponent extends Component {
-  @service router;
+  //@service router;
   @service pollsService;
   @service siteSettings;
-  @service store;
+  //@service store;
   @service appEvents;
 
   @tracked inFrontpage = false;
@@ -130,7 +130,6 @@ export default class PollListItemWidgetComponent extends Component {
     this.pollAttributes = updatedAttributes; // pollAttributes 업데이트
     this.pollUpdated = true;
   }
-
 
   async handlePollVotedEvent(poll, post, vote) {
     if (this.pollAttributes && this.pollAttributes.id === `${poll.name}-${poll.post_id}`) {

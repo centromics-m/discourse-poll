@@ -22,6 +22,10 @@ const STAFF_POLL_RESULT = "staff_only";
 export default class PollUiBuilderModal extends Component {
   @service siteSettings;
 
+  // by etna
+  // mode = this.model.mode ?? 'default'; // default or standalone
+  // onInsertPoll = this.model.insertPoll;
+
   showAdvanced = false;
   pollType = REGULAR_POLL_TYPE;
   pollTitle;
@@ -38,6 +42,61 @@ export default class PollUiBuilderModal extends Component {
   defaultScore = [0,100,200,300,400,500];
   chartType = BAR_CHART_TYPE;
   publicPoll = this.siteSettings.poll_default_public;
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+    console.log('this.model', this.model);
+
+    // NOTE: post editor에서 호출하지 않고 외부에서 호출하면 this.model == this.model.model임.. (원 소스의 잠재적 오류로 보임)
+    if(this.model.model) {
+      this.model = this.model.model;
+    }
+
+    const polldata = this.model.polldata;
+
+    if(polldata.pollType != undefined) {
+      this.set('pollType', polldata.pollType);
+    }
+    if(polldata.pollTitle != undefined) {
+      this.pollTitle = polldata.pollTitle;
+    }
+    if(polldata.pollOptions != undefined) {
+      console.log('polldata.pollOptions', polldata.pollOptions)
+      this.pollOptions = polldata.pollOptions?.map((option) => {
+        return EmberObject.create({...option, value: option.html});
+      });
+      console.log('this.pollOptions', this.pollOptions)
+
+    }
+    if(polldata.pollOptionsText != undefined) {
+      this.pollOptionsText = polldata.pollOptionsText;
+    }
+    // if(polldata.pollDataLinks != undefined) {
+    //   console.log('polldata.pollDataLinks', polldata.pollDataLinks);
+    //   if(polldata.pollDataLinks == null)
+    //     polldata.pollDataLinks = [];
+    //   this.pollOptions = polldata.pollDataLinks.map((option) => {
+    //     EmberObject.create({ url: option.url, title: option.title, content: option.content });
+    //   });
+    // }
+    if(polldata.pollMin != undefined) { this.pollMin = polldata.pollMin; }
+    if(polldata.pollMax != undefined) { this.pollMax = polldata.pollMax; }
+    if(polldata.pollStep != undefined) { this.pollStep = polldata.pollStep; }
+    if(polldata.pollGroups != undefined) { this.pollGroups = polldata.pollGroups; }
+    if(polldata.pollAutoClose != undefined) { this.pollAutoClose = polldata.pollAutoClose; }
+    if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
+    if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
+    if(polldata.publicPoll != undefined) { this.pollResult = polldata.publicPoll; }
+
+    //console.log('this.model.model.mode', this.model.model);
+    console.log('this.model.mode', this.model.mode);
+    console.log('this.model', this.model);
+  }
+
+  // get model() {
+  //   console.log('this.modelthis.model', this.args);
+  //   return this.args.model;
+  // }
 
   @or("showAdvanced", "isNumber") showNumber;
   @or("showAdvanced", "isRankedChoice") showRankedChoice;
@@ -172,9 +231,12 @@ export default class PollUiBuilderModal extends Component {
     let pollHeader = "[poll";
     let output = "";
 
-    const match = this.model.toolbarEvent
+    let match = null;
+    if(this.model.toolbarEvent) {
+      match = this.model.toolbarEvent
       .getText()
       .match(/\[poll(\s+name=[^\s\]]+)*.*\]/gim);
+    }
 
     if (match) {
       pollHeader += ` name=poll${match.length + 1}`;
@@ -228,8 +290,8 @@ export default class PollUiBuilderModal extends Component {
           output += `* ${option.value.trim()}`;
           if(option.correct) {
             output += ' [correct]';
-         }
-         output +="\n";
+        }
+        output +="\n";
         }
       });
     }
@@ -253,6 +315,85 @@ export default class PollUiBuilderModal extends Component {
     }
 
     return output;
+  }
+
+  @discourseComputed(
+    "pollType",
+    "pollResult",
+    "publicPoll",
+    "pollTitle",
+    "pollOptions.@each.value",
+    "pollDataLinks.@each.value",
+    "pollMin",
+    "pollMax",
+    "pollStep",
+    "pollGroups",
+    "pollAutoClose",
+    "score",
+    "chartType",
+  )
+  pollOutputAsHash(
+    pollType,
+    pollResult,
+    publicPoll,
+    pollTitle,
+    pollOptions,
+    pollDataLinks,
+    pollMin,
+    pollMax,
+    pollStep,
+    pollGroups,
+    pollAutoClose,
+    score,
+    chartType
+  ) {
+    // console.log(    pollType,
+    //   pollResult,
+    //   publicPoll,
+    //   pollTitle,
+    //   pollOptions,
+    //   pollDataLinks,
+    //   pollMin,
+    //   pollMax,
+    //   pollStep,
+    //   pollGroups, // undefined
+    //   pollAutoClose, // undefined
+    //   score,
+    //   chartType)
+
+    const data = {
+      pollType,
+      pollResult,
+      publicPoll,
+      pollTitle: pollTitle?.trim() || '',
+      pollMin,
+      pollMax,
+      pollStep: (!pollStep || pollStep <= 0 ? 1 : pollStep),
+      pollGroups,
+      pollAutoClose: pollAutoClose?.toISOString(),
+      score,
+      chartType,
+      pollDataLinks,
+    };
+
+    let match = null;
+    if(this.model.toolbarEvent) {
+      match = this.model.toolbarEvent
+      .getText()
+      .match(/\[poll(\s+name=[^\s\]]+)*.*\]/gim);
+    }
+
+    let name = 'poll';
+    if (match) {
+      name = `poll${match.length + 1}`;
+    }
+
+    data['name'] = name;
+
+    // text로도..
+    data['pollOutput'] = this.pollOutput;
+
+    return data;
   }
 
   @discourseComputed("isNumber", "pollOptionsCount")
@@ -384,9 +525,33 @@ export default class PollUiBuilderModal extends Component {
   }
 
   @action
-  insertPoll() {
-    this.model.toolbarEvent.addText(this.pollOutput);
-    this.closeModal();
+  async insertPoll() {
+    console.log('poll ui builder this.model', this.model);
+    // original code
+    if(this.model.mode == undefined || this.model.mode == 'default' || this.model.mode == '') {
+      this.model.toolbarEvent.addText(this.pollOutput);
+      this.closeModal();
+
+    // for election plugin
+    } else {
+      console.log('this.pollOutputAsHash', this.pollOutputAsHash);
+
+      if(this.model.onInsertPoll) {
+        const _this = this.model._this; // parent component
+        const topicId = this.model.topicId;
+        const categoryId = this.model.categoryId;
+        const position = this.model.position;
+        const data = this.pollOutputAsHash;
+
+        let result = await this.model.onInsertPoll(_this, topicId, categoryId, position, data);
+        console.log('result', result);
+        this.closeModal();
+
+      } else {
+        console.log('poll-ui-builder: insertPoll: no onInsertPoll callback argument is given');
+      }
+    }
+
   }
 
   @action

@@ -5,7 +5,10 @@ function initializePollUIBuilder(api) {
   api.addComposerToolbarPopupMenuOption({
     action: (toolbarEvent) => {
       api.container.lookup("service:modal").show(PollUiBuilder, {
-        model: { toolbarEvent },
+        model: {
+          toolbarEvent,
+          // onInsertPoll(outputAsJson) (for standalone mode; used by external plugin)
+         },
       });
     },
     icon: "chart-bar",
