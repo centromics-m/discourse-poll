@@ -12,11 +12,12 @@ export default class AdminPluginsPolls extends DiscourseRoute {
 
     // AJAX 요청으로 데이터를 가져옵니다.
     const response = await ajax(`/polls/poll_admin_list.json?page=${page}`);
-    const { polls, total_pages } = response.poll_list;
+    const { polls, total_pages, total } = response;
 
     return {
       polls,
       totalPages: total_pages,
+      total: total
     };
   }
 
@@ -24,6 +25,7 @@ export default class AdminPluginsPolls extends DiscourseRoute {
     controller.setProperties({
       polls: model.polls,
       totalPages: model.totalPages,
+      total: model.total,
       currentPage: 1,
     });
   }

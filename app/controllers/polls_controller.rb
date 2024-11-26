@@ -32,7 +32,7 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
     total_pages = (total.to_f / pagesize).ceil
 
-    render json: { poll_list: {polls:serialize_data( @polls, PollSerializer), total_pages: total_pages, total:total } }
+    render json: {polls:serialize_data( @polls, PollSerializer), total_pages: total_pages, total:total}
   end
 
   def vote
