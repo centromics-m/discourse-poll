@@ -21,9 +21,9 @@
         <th>{{i18n "poll.admin.c_manage"}}</th>
       </thead>
       <tbody>
-        {{#each this.polls as |poll|}}
+        {{#each this.polls as |poll index|}}
         <tr id={{concat "poll-admin__row-" poll.id}}>
-          <td></td>
+          <td>{{this.currentPage}}</td>
           <td><a href={{poll.post_url}}>{{poll.post_topic_title}}</a><br>
             {{poll.title}}
           </td>
@@ -33,14 +33,9 @@
           <td>{{this.formatDate poll.created_at}}</td>
           <td style="width: 120px">
             <div class="poll-admin__listitem-action">
-              {{!-- {{i18n "poll.admin.edit"}} --}}
-              {{!-- <LinkTo
-                    @route="adminPlugins.show.discourse-gamification-leaderboards.show"
-                    @model={{poll}}
-                    class="btn leaderboard-admin__edit btn-text btn-small"
-                  >{{i18n "gamification.edit"}} </LinkTo> --}}
-              {{!-- <DButton class="btn-small poll-admin__delete btn-danger" @icon="trash-alt" @title="poll.admin.delete"
-                @action={{action "destroyPoll" poll}} /> --}}
+               {{i18n "poll.admin.edit"}}
+              <DButton class="btn-small poll-admin__delete btn-danger" @icon="trash-alt" @title="poll.admin.delete"
+                @action={{action "destroyPoll" poll}} />
             </div>
           </td>
         </tr>
