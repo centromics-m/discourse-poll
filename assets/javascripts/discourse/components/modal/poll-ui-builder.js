@@ -54,39 +54,42 @@ export default class PollUiBuilderModal extends Component {
 
     const polldata = this.model.polldata;
 
-    if(polldata.pollType != undefined) {
-      this.set('pollType', polldata.pollType);
-    }
-    if(polldata.pollTitle != undefined) {
-      this.pollTitle = polldata.pollTitle;
-    }
-    if(polldata.pollOptions != undefined) {
-      console.log('polldata.pollOptions', polldata.pollOptions)
-      this.pollOptions = polldata.pollOptions?.map((option) => {
-        return EmberObject.create({...option, value: option.html});
-      });
-      console.log('this.pollOptions', this.pollOptions)
+    if(polldata) {
+      if(polldata.pollType != undefined) {
+        this.set('pollType', polldata.pollType);
+      }
+      if(polldata.pollTitle != undefined) {
+        this.pollTitle = polldata.pollTitle;
+      }
+      if(polldata.pollOptions != undefined) {
+        console.log('polldata.pollOptions', polldata.pollOptions)
+        this.pollOptions = polldata.pollOptions?.map((option) => {
+          return EmberObject.create({...option, value: option.html});
+        });
+        console.log('this.pollOptions', this.pollOptions)
 
+      }
+      if(polldata.pollOptionsText != undefined) {
+        this.pollOptionsText = polldata.pollOptionsText;
+      }
+      // TODO: ~~~
+      // if(polldata.pollDataLinks != undefined) {
+      //   console.log('polldata.pollDataLinks', polldata.pollDataLinks);
+      //   if(polldata.pollDataLinks == null)
+      //     polldata.pollDataLinks = [];
+      //   this.pollOptions = polldata.pollDataLinks.map((option) => {
+      //     EmberObject.create({ url: option.url, title: option.title, content: option.content });
+      //   });
+      // }
+      if(polldata.pollMin != undefined) { this.pollMin = polldata.pollMin; }
+      if(polldata.pollMax != undefined) { this.pollMax = polldata.pollMax; }
+      if(polldata.pollStep != undefined) { this.pollStep = polldata.pollStep; }
+      if(polldata.pollGroups != undefined) { this.pollGroups = polldata.pollGroups; }
+      if(polldata.pollAutoClose != undefined) { this.pollAutoClose = polldata.pollAutoClose; }
+      if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
+      if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
+      if(polldata.publicPoll != undefined) { this.pollResult = polldata.publicPoll; }
     }
-    if(polldata.pollOptionsText != undefined) {
-      this.pollOptionsText = polldata.pollOptionsText;
-    }
-    // if(polldata.pollDataLinks != undefined) {
-    //   console.log('polldata.pollDataLinks', polldata.pollDataLinks);
-    //   if(polldata.pollDataLinks == null)
-    //     polldata.pollDataLinks = [];
-    //   this.pollOptions = polldata.pollDataLinks.map((option) => {
-    //     EmberObject.create({ url: option.url, title: option.title, content: option.content });
-    //   });
-    // }
-    if(polldata.pollMin != undefined) { this.pollMin = polldata.pollMin; }
-    if(polldata.pollMax != undefined) { this.pollMax = polldata.pollMax; }
-    if(polldata.pollStep != undefined) { this.pollStep = polldata.pollStep; }
-    if(polldata.pollGroups != undefined) { this.pollGroups = polldata.pollGroups; }
-    if(polldata.pollAutoClose != undefined) { this.pollAutoClose = polldata.pollAutoClose; }
-    if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
-    if(polldata.pollResult != undefined) { this.pollResult = polldata.pollResult; }
-    if(polldata.publicPoll != undefined) { this.pollResult = polldata.publicPoll; }
 
     //console.log('this.model.model.mode', this.model.model);
     console.log('this.model.mode', this.model.mode);
@@ -373,6 +376,7 @@ export default class PollUiBuilderModal extends Component {
       pollAutoClose: pollAutoClose?.toISOString(),
       score,
       chartType,
+      pollOptions,
       pollDataLinks,
     };
 
