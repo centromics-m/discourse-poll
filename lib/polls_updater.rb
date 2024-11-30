@@ -3,6 +3,7 @@
 module DiscoursePoll
   class PollsUpdater
     POLL_ATTRIBUTES ||= %w[close_at max min results status step type visibility title groups score]
+    POLL_DATA_LINK_ATTRIBUTES ||= %w[title url content]
 
     def self.update(post, polls)
       ::Poll.transaction do
@@ -26,13 +27,16 @@ module DiscoursePoll
           polls.slice(*created_poll_names).values.each { |poll| Poll.create!(post.id, poll) }
         end
 
+        pp "############## pollupdatr #{polls}"
+
         # update polls
         ::Poll
-          .includes(:poll_votes, :poll_options)
+          .includes(:poll_votes, :poll_options, :poll_data_links)
           .where(post: post)
           .find_each do |old_poll|
             new_poll = polls[old_poll.name]
             new_poll_options = new_poll["options"]
+            new_poll_data_links = new_poll["data_links"]
 
             attributes = new_poll.slice(*POLL_ATTRIBUTES)
             attributes["visibility"] = new_poll["public"] == "true" ? "everyone" : "secret"
@@ -45,7 +49,9 @@ module DiscoursePoll
             attributes["groups"] = new_poll["groups"]
             poll = ::Poll.new(attributes)
 
-            if is_different?(old_poll, poll, new_poll_options)
+pp "new_poll_data_links: #{new_poll_data_links}"
+
+            if is_different?(old_poll, poll, new_poll_options, new_poll_data_links)
               # only prevent changes when there's at least 1 vote
               if old_poll.poll_votes.size > 0
                 # can't change after edit window (when enabled)
@@ -98,6 +104,20 @@ module DiscoursePoll
                 )
               end
 
+              # etna
+              # destroy existing data links
+              ::PollDataLink.where(poll: old_poll).destroy_all
+
+              # create new options
+              new_poll_data_links.each do |data_link|
+                ::PollDataLink.create!(
+                  poll: old_poll,
+                  title: data_link["title"],
+                  url: data_link["url"],
+                  content: data_link["content"].strip,
+                )
+              end
+
               has_changed = true
             end
           end
@@ -126,7 +146,9 @@ module DiscoursePoll
 
     private
 
-    def self.is_different?(old_poll, new_poll, new_options)
+    def self.is_different?(old_poll, new_poll, new_options, new_poll_data_links)
+#pp "is_different: #{new_options} #{new_poll_data_links}"
+
       # an attribute was changed?
       POLL_ATTRIBUTES.each do |attr|
         return true if old_poll.public_send(attr) != new_poll.public_send(attr)
@@ -135,7 +157,20 @@ module DiscoursePoll
       sorted_old_options = old_poll.poll_options.map { |o| o.digest }.sort
       sorted_new_options = new_options.map { |o| o["id"] }.sort
 
-      sorted_old_options != sorted_new_options
+      return true if sorted_old_options != sorted_new_options
+
+      sorted_old_data_links = old_poll.poll_data_links.map { |o| o.url }.sort
+      sorted_new_data_links = new_poll_data_links.map { |o| o['url'] }.sort
+
+      # pp "##########sorted_old_data_links #{sorted_old_data_links}"
+
+      # pp "##########sorted_new_data_links #{sorted_new_data_links}"
+
+      return true if sorted_old_data_links != sorted_new_data_links
+
+      #pp "##########new_poll_data_links2 #{old_poll.poll_data_links}"
+
+      false
     end
   end
 end

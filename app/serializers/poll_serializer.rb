@@ -24,7 +24,7 @@ class PollSerializer < ApplicationSerializer
              :post_topic_title,
              :post_topic_poll,
              :post_topic_overview,
-             :poll_data_link,
+             :poll_data_links,
              :created_at,
              :updated_at
 
@@ -114,12 +114,29 @@ class PollSerializer < ApplicationSerializer
     doc_element.to_html
   end
 
-  def poll_data_link
+  def poll_data_links
     html_string = object.post&.cooked
     doc = Nokogiri::HTML(html_string)
-    doc_element = doc.css('.poll-data-link')
 
-    doc_element.to_html
+    data_links = []
+
+    doc.css('.poll-data-link').each do |d|
+      link = d.css('a').first
+      url = ""
+      title = ""
+      if link.present?
+        url = link.attributes['href']&.value.to_s || ""
+        title = link.text || ""
+      end
+      content = d.to_s.gsub(/<a.*<\/a><br>/, '')
+      content_text = Nokogiri::HTML(content).text.strip
+      data_links << { "title" => title, "url" => url, "content" => content_text }
+    end
+
+    # pp "################ poll_data_links html_string: #{html_string}"
+    # pp "################ poll_data_links: #{data_links}"
+
+    data_links
   end
 
   def post_topic_overview

@@ -12,7 +12,7 @@ export default class AdminPluginsPollsController extends Controller {
   @service dialog;
   @service toasts;
   @tracked creatingNew = false;
-  @tracked polls = []
+  @tracked polls = [];
   currentPage =1;
   totalPages = null;
   total = 0

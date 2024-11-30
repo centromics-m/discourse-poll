@@ -139,7 +139,8 @@
           </div>
         {{/if}}
       </div>
-      <div class="poll-data-link">
+
+      <div class="poll-data-links">
         {{#each this.pollDataLinks as |data_link index|}}
           <div class="input-group poll-option-value">
             <input
@@ -154,7 +155,7 @@
               {{on "input" (fn this.updateTitleValue data_link)}}
               placeholder="Title"
             />
-            <Textarea
+            <textarea
               type="text"
               value={{data_link.content}}
               {{on "input" (fn this.updateContentValue data_link)}}

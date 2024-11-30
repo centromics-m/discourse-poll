@@ -40,6 +40,7 @@ after_initialize do
   require_relative "app/controllers/polls_controller"
   require_relative "app/models/poll_option"
   require_relative "app/models/poll_vote"
+  require_relative "app/models/poll_data_link"
   require_relative "app/models/poll"
   require_relative "app/serializers/poll_option_serializer"
   require_relative "app/serializers/poll_serializer"
@@ -90,6 +91,9 @@ after_initialize do
     if self.id.present?
       return if polls.blank? && ::Poll.where(post: self).empty?
 
+      pp "########################"
+      pp polls
+      pp "########################"
       DiscoursePoll::PollsUpdater.update(self, polls)
     else
       self.extracted_polls = polls

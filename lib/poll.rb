@@ -481,11 +481,17 @@ class DiscoursePoll::Poll
     raw = raw.sub(%r{\[quote.+/quote\]}m, "")
     cooked = PrettyText.cook(raw, topic_id: topic_id, user_id: user_id)
 
+    pp "#raw######################"
+    pp raw
+    pp "#cooked######################"
+    pp cooked
+    pp "#######################"
+
     Nokogiri
       .HTML5(cooked)
       .css("div.poll")
       .map do |p|
-        poll = { "options" => [], "name" => DiscoursePoll::DEFAULT_POLL_NAME }
+        poll = { "options" => [], "name" => DiscoursePoll::DEFAULT_POLL_NAME, "data_links" => [] }
 
         # attributes
         p.attributes.values.each do |attribute|
@@ -514,6 +520,27 @@ class DiscoursePoll::Poll
         # title
         title_element = p.css(".poll-title").first
         poll["title"] = title_element.inner_html.strip if title_element
+
+        # added by etna
+        # TODO: poll 여러 개일 경우 수정 반영할 것.
+        Nokogiri
+          .HTML5(cooked)
+          .css("div.poll-data-link")
+          .each do |d|
+            link = d.css('a').first
+            url = ""
+            title = ""
+            if link.present?
+              # url = link.attributes.to_s
+              # pp "U################## url #{url}"
+              url = link.attributes['href']&.value.to_s || ""
+              title = link.text || ""
+            end
+            content = d.to_s.gsub(/<a.*<\/a><br>/, '')
+            poll["data_links"] << { "title" => title, "url" => url, "content" => content }
+          end
+
+          pp "################## pol: #{poll.to_s}"
 
         poll
       end
