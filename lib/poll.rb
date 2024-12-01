@@ -540,7 +540,7 @@ class DiscoursePoll::Poll
             poll["data_links"] << { "title" => title, "url" => url, "content" => content }
           end
 
-          pp "################## pol: #{poll.to_s}"
+          #pp "################## pol: #{poll.to_s}"
 
         poll
       end

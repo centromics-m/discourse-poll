@@ -49,8 +49,6 @@ module DiscoursePoll
             attributes["groups"] = new_poll["groups"]
             poll = ::Poll.new(attributes)
 
-pp "new_poll_data_links: #{new_poll_data_links}"
-
             if is_different?(old_poll, poll, new_poll_options, new_poll_data_links)
               # only prevent changes when there's at least 1 vote
               if old_poll.poll_votes.size > 0

@@ -14,19 +14,16 @@ module DiscoursePoll
       DiscoursePoll::Poll
         .extract(@post.raw, @post.topic_id, @post.user_id)
         .each do |poll|
-          (puts "##E1"; return false) unless valid_arguments?(poll)
-          (puts "##E2"; return false) unless valid_numbers?(poll)
-          (puts "##E3"; return false) unless unique_poll_name?(polls, poll)
-          (puts "##E4"; return false) unless unique_options?(poll)
-          (puts "##E5"; return false) unless any_blank_options?(poll)
-          (puts "##E6"; return false) unless at_least_one_option?(poll)
-          (puts "##E7"; return false) unless valid_number_of_options?(poll)
-          (puts "##E8"; return false) unless valid_multiple_choice_settings?(poll)
+          return false unless valid_arguments?(poll)
+          return false unless valid_numbers?(poll)
+          return false unless unique_poll_name?(polls, poll)
+          return false unless unique_options?(poll)
+          return false unless any_blank_options?(poll)
+          return false unless at_least_one_option?(poll)
+          return false unless valid_number_of_options?(poll)
+          return false unless valid_multiple_choice_settings?(poll)
           polls[poll["name"]] = poll
         end
-
-      pp '#333333333333 validate_polls'
-      pp polls
 
       polls
     end

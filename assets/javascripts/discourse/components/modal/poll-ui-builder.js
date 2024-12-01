@@ -303,19 +303,19 @@ export default class PollUiBuilderModal extends Component {
     output += "[/poll]\n";
 
     if (pollDataLinks.length > 0 ) {
-      output += "[poll_data_link]\n";
-
+      //output += "[poll_data_links]\n";
       pollDataLinks.forEach((dataLink) => {
+        output += "[poll_data_link]\n";
         if (dataLink.url.length > 0) {
           output += `[${dataLink.title}](${dataLink.url})\n`;
 
-          if(dataLink.content!='') {
+          if(dataLink.content != '') {
             output +=`${dataLink.content}`;
           }
         }
+        output += "\n[/poll_data_link]\n";
       });
-
-      output += "\n[/poll_data_link]\n";
+      //output += "[/poll_data_links]\n";
     }
 
     return output;
