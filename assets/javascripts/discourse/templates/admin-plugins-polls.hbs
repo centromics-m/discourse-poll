@@ -3,13 +3,13 @@
     {{#if @model}}
     <table>
       <colgroup>
-        <col>
+        <col style="width:80px">
         <col>
         <col style="width:100px">
         <col style="width:100px">
         <col style="width:120px">
         <col style="width:120px">
-        <col style="width:120px">
+        <col style="width:100px">
       </colgroup>
       <thead>
         <th>{{i18n "poll.admin.c_num"}}</th>
@@ -23,7 +23,7 @@
       <tbody>
         {{#each this.polls as |poll index|}}
         <tr id={{concat "poll-admin__row-" poll.id}}>
-          <td>{{this.currentPage}}</td>
+          <td>{{this.getNumber this.total this.currentPage index}}</td>
           <td><a href={{poll.post_url}}>{{poll.post_topic_title}}</a><br>
             {{poll.title}}
           </td>
@@ -33,7 +33,7 @@
           <td>{{this.formatDate poll.created_at}}</td>
           <td style="width: 120px">
             <div class="poll-admin__listitem-action">
-               {{i18n "poll.admin.edit"}}
+              <a class="btn poll-admin-edit btn-text btn-small">{{i18n "poll.admin.edit"}} </a>
               <DButton class="btn-small poll-admin__delete btn-danger" @icon="trash-alt" @title="poll.admin.delete"
                 @action={{action "destroyPoll" poll}} />
             </div>
@@ -46,7 +46,7 @@
     {{#unless creatingNew}}
     <div class="admin-plugin-config-area__empty-list">
       {{i18n "poll.admin.none"}}
-      <DButton @label="poll.admin.cta" class="btn-default btn-small poll-admin__cta-new"
+      <DButton @label="poll.admin.cta" class="btn btn-small poll-admin__cta-new"
         {{!-- @action={{action (mut creatingNew) true}}  --}}
         @action={{action "createNew"}}
       />

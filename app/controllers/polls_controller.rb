@@ -60,6 +60,17 @@ class DiscoursePoll::PollsController < ::ApplicationController
     end
   end
 
+  def remove_poll
+    poll = Poll.find_by(id: params[:id])
+
+    if poll
+      poll.destroy
+      render json: { message: "Poll deleted successfully" }, status: :ok
+    else
+      render json: { error: "Poll not found" }, status: :not_found
+    end
+  end
+
   def toggle_status
     post_id = params.require(:post_id)
     poll_name = params.require(:poll_name)

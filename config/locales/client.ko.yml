@@ -137,6 +137,8 @@ ko:
         c_score: '점수'
         c_created_at: '작성일'
         c_manage: '관리'
+        confirm_destroy: '정말로 이 투표를 삭제합니까?'
+        delete_success: '투표가 성공적으로 삭제되었습니다'
 
       poll_list_widget:
         goto_topic: '본문으로 이동'

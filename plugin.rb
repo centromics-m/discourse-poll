@@ -56,6 +56,7 @@ after_initialize do
   DiscoursePoll::Engine.routes.draw do
     put "/vote" => "polls#vote"
     delete "/vote" => "polls#remove_vote"
+    delete "/poll/:id" => "polls#remove_poll"
     put "/toggle_status" => "polls#toggle_status"
     get "/voters" => "polls#voters"
     get "/grouped_poll_results" => "polls#grouped_poll_results"

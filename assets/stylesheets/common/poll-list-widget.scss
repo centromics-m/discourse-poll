@@ -22,6 +22,8 @@
         z-index: 8;
     }
 
+
+
   .poll-category-more a {
     line-height:120%;
     display:block;
@@ -164,10 +166,15 @@
     border-left: 16px solid white; /* 화살표 색상 */
   }
 
+  .discourse-polls th {white-space: nowrap}
+}
+
+.polls {
   .pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    text-align : center;
   }
 
   .pagination-button {
@@ -190,7 +197,9 @@
     opacity: 0.5;
   }
 
-  .discourse-polls th {white-space: nowrap}
+  .poll-admin-edit {
+    vertical-align: top;
+  }
 }
 
 

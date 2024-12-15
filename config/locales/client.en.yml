@@ -179,6 +179,8 @@ en:
         c_score: 'score'
         c_created_at: 'created at'
         c_manage: 'manage'
+        confirm_destroy: 'are you sure delete this poll?'
+        delete_success: 'successfully deleted poll'
 
       poll_list_widget:
         goto_topic: 'Go to topic'

@@ -34,6 +34,10 @@ export default class AdminPluginsPollsController extends Controller {
     this.modal.show('admin-plugins-polls-new');
   }
 
+  getNumber(total,currentPage, index) {
+    return total-((currentPage-1)*10)-index;
+  }
+
   @action
   async loadPage(page) {
     if (page === this.currentPage) return;
@@ -44,7 +48,6 @@ export default class AdminPluginsPollsController extends Controller {
       // AJAX 요청으로 특정 페이지 데이터 가져오기
       const response = await ajax(`/polls/poll_admin_list.json?page=${page}`);
       const { polls, total_pages, total } = response;
-      console.log(page);
       this.setProperties({
         polls,
         currentPage: page,
@@ -61,12 +64,12 @@ export default class AdminPluginsPollsController extends Controller {
   @action
    destroyPoll(poll) {
    this.dialog.deleteConfirm({
-      message: I18n.t('gamification.leaderboard.confirm_destroy'),
+      message: I18n.t('poll.admin.confirm_destroy'),
        didConfirm: () => {
-         return ajax(`/admin/plugins/gamification/leaderboard/${poll.id}`, { type: 'DELETE', }).then(() => {
+         return ajax(`/poll/${poll.id}.json`, { type: 'DELETE', }).then(() => {
          this.toasts.success({
             duration: 3000,
-           data: { message: I18n.t('gamification.leaderboard.delete_success') },
+           data: { message: I18n.t('poll.admin.delete_success') },
          });
            this.model.polls = this.model.polls.filter((p) => p !== poll); // Array에서 poll 제거
          }).catch(popupAjaxError);
