@@ -65,7 +65,7 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
     if poll
       poll.destroy
-      render json: { message: "Poll deleted successfully" }, status: :ok
+      render json: { "status": "success", message: "Poll deleted successfully" }, status: :ok
     else
       render json: { error: "Poll not found" }, status: :not_found
     end

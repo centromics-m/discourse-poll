@@ -7,7 +7,7 @@ class Poll < ActiveRecord::Base
   belongs_to :post, -> { with_deleted }
   has_many :poll_options, -> { order(:id) }, dependent: :destroy
   has_many :poll_votes
-  has_many :poll_data_links, dependent: :destroy
+  #has_many :poll_data_links, dependent: :destroy, :optional=>true
 
   enum type: { regular: 0, multiple: 1, number: 2, ranked_choice: 3 }, _scopes: false
 

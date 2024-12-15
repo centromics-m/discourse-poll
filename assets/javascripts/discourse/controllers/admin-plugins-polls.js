@@ -66,12 +66,13 @@ export default class AdminPluginsPollsController extends Controller {
    this.dialog.deleteConfirm({
       message: I18n.t('poll.admin.confirm_destroy'),
        didConfirm: () => {
-         return ajax(`/poll/${poll.id}.json`, { type: 'DELETE', }).then(() => {
+         let poll_id=poll.id;
+         return ajax(`/polls/remove-poll/${poll.id}.json`, { type: 'DELETE', }).then((response) => {
          this.toasts.success({
             duration: 3000,
            data: { message: I18n.t('poll.admin.delete_success') },
          });
-           this.model.polls = this.model.polls.filter((p) => p !== poll); // Array에서 poll 제거
+           this.polls = this.polls.filter(poll => poll.id !== poll_id);// Array에서 poll 제거
          }).catch(popupAjaxError);
       },
      });
