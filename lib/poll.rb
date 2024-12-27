@@ -536,8 +536,24 @@ class DiscoursePoll::Poll
               url = link.attributes['href']&.value.to_s || ""
               title = link.text || ""
             end
-            content = d.to_s.gsub(/<a.*<\/a><br>/, '')
-            poll["data_links"] << { "title" => title, "url" => url, "content" => content }
+
+            content = d.to_s.gsub(/<a.*<\/a><br>/, '') # 링크 제거
+            new_data_link = { "title" => title.strip, "url" => url.strip, "content" => Nokogiri::HTML(content).text.strip }
+            next if poll["data_links"].filter { |x| x == new_data_link }.present? # 중복된것 있으면 무시
+
+            data_links_updated = false
+            poll["data_links"] = poll["data_links"].map do |x|
+              if x['url'] == new_data_link['url']
+                x['title'] = new_data_link['title']
+                x['url'] = new_data_link['url']
+                x['content'] = new_data_link['content']
+                data_links_updated = true
+              end
+              x
+            end
+            next if data_links_updated
+
+            poll["data_links"] << new_data_link
           end
 
           #pp "################## pol: #{poll.to_s}"

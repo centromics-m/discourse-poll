@@ -80,6 +80,7 @@ after_initialize do
     return unless self.raw_changed? || force
 
     validator = DiscoursePoll::PollsValidator.new(self)
+    # NOTE: validate_polls시 Poll.extract가 실행됨 [poll.rb]
     return unless (polls = validator.validate_polls)
     return if polls.blank? && self.id.blank?
 
@@ -92,9 +93,9 @@ after_initialize do
     if self.id.present?
       return if polls.blank? && ::Poll.where(post: self).empty?
 
-      pp "########################"
+      pp "######################## polls start"
       pp polls
-      pp "########################"
+      pp "######################## polls end"
       DiscoursePoll::PollsUpdater.update(self, polls)
     else
       self.extracted_polls = polls
