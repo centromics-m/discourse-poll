@@ -57,25 +57,29 @@ module DiscoursePoll
               if old_poll.poll_votes.size > 0
                 # can't change after edit window (when enabled)
                 if edit_window > 0 && old_poll.created_at < edit_window.minutes.ago
-                  error =
-                    (
-                      if poll.name == DiscoursePoll::DEFAULT_POLL_NAME
-                        I18n.t(
-                          "poll.edit_window_expired.cannot_edit_default_poll_with_votes",
-                          minutes: edit_window,
-                        )
-                      else
-                        I18n.t(
-                          "poll.edit_window_expired.cannot_edit_named_poll_with_votes",
-                          minutes: edit_window,
-                          name: poll.name,
-                        )
-                      end
-                    )
+                  # NOTE: (투표수가 있을때) 처음 5분 후에는 폴링을 변경할 수 없습니다. 오류로 인해서 election stage 변경이 안됩니다.
+                  #       무시하게 다음을 주석처리함.
+                  # 참고: discourse-election-plugin: election-save-current-stage.js#save()
 
-                  post.errors.add(:base, error)
-                  # rubocop:disable Lint/NonLocalExitFromIterator
-                  return
+                  # error =
+                  #   (
+                  #     if poll.name == DiscoursePoll::DEFAULT_POLL_NAME
+                  #       I18n.t(
+                  #         "poll.edit_window_expired.cannot_edit_default_poll_with_votes",
+                  #         minutes: edit_window,
+                  #       )
+                  #     else
+                  #       I18n.t(
+                  #         "poll.edit_window_expired.cannot_edit_named_poll_with_votes",
+                  #         minutes: edit_window,
+                  #         name: poll.name,
+                  #       )
+                  #     end
+                  #   )
+
+                  # post.errors.add(:base, error)
+                  # # rubocop:disable Lint/NonLocalExitFromIterator
+                  # return
                   # rubocop:enable Lint/NonLocalExitFromIterator
                 end
               end
