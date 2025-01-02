@@ -24,7 +24,7 @@ class PollSerializer < ApplicationSerializer
              :post_topic_title,
              :post_topic_poll,
              :post_topic_overview,
-             :poll_data_links,
+             :poll_data_link,
              :created_at,
              :updated_at
 
@@ -115,44 +115,12 @@ class PollSerializer < ApplicationSerializer
   end
 
   # NOTE: poll.rb#self.extract 참고
-  def poll_data_links
+  def poll_data_link
     html_string = object.post&.cooked
     doc = Nokogiri::HTML(html_string)
+    doc_element = doc.css('.poll-data-link')
 
-    data_links = []
-
-    doc.css('.poll-data-link').each do |d|
-      link = d.css('a').first
-      url = ""
-      title = ""
-      if link.present?
-        url = link.attributes['href']&.value.to_s || ""
-        title = link.text || ""
-      end
-
-      content = d.to_s.gsub(/<a.*<\/a><br>/, '')
-      new_data_link = { "title" => title.strip, "url" => url.strip, "content" => Nokogiri::HTML(content).text.strip }
-      next if data_links.filter { |x| x == new_data_link }.present? # 중복된것 있으면 무시
-
-      data_links_updated = false
-      data_links = data_links.map do |x|
-        if x['url'] == new_data_link['url']
-          x['title'] = new_data_link['title']
-          x['url'] = new_data_link['url']
-          x['content'] = new_data_link['content']
-          data_links_updated = true
-        end
-        x
-      end
-      next if data_links_updated
-
-      data_links << new_data_link
-    end
-
-    # pp "################ poll_data_links html_string: #{html_string}"
-    # pp "################ poll_data_links: #{data_links}"
-
-    data_links
+    return doc_element.to_html
   end
 
   def post_topic_overview

@@ -40,7 +40,6 @@ after_initialize do
   require_relative "app/controllers/polls_controller"
   require_relative "app/models/poll_option"
   require_relative "app/models/poll_vote"
-  require_relative "app/models/poll_data_link"
   require_relative "app/models/poll"
   require_relative "app/serializers/poll_option_serializer"
   require_relative "app/serializers/poll_serializer"

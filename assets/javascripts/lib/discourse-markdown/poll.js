@@ -216,7 +216,6 @@ export function setup(helper) {
     "div.poll-title",
     "div.poll-score",
     "div.poll",
-    //"div.poll-data-links",
     "div.poll-data-link",
     "div[data-*]",
     "li[data-*]",

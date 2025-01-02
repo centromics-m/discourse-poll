@@ -6,7 +6,6 @@ import { fn } from "@ember/helper";
 import i18n from "discourse-common/helpers/i18n";
 import { service } from "@ember/service";
 import didInsert from "@ember/render-modifiers/modifiers/did-insert";
-import didUpdate from "@ember/render-modifiers/modifiers/did-update";
 import PollListTabDiscussion from "./poll-list-tab-discussion";
 import PollListTabVoter from "./poll-list-tab-voter";
 import Topic from "discourse/models/topic";
