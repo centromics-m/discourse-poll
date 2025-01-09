@@ -31,7 +31,7 @@ export default class PollUiBuilderModal extends Component {
   pollTitle;
   pollOptions = [EmberObject.create({ value: "", correct: false})];
   pollOptionsText = "";
-  pollDataLinks = [EmberObject.create({ url: "", title: "", content: ""})];
+  pollDataLinks = [];
   pollMin = 1;
   pollMax = 2;
   pollStep = 1;
