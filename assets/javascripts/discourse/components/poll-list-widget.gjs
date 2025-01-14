@@ -27,10 +27,30 @@ export default class PollListWidgetComponent extends Component {
   @service siteSettings;
   @tracked categoryId = this.pollsService.category;
   @tracked currentCategory = null;
+  @service site;
+  @tracked site_description;
+  @tracked short_site_description;
 
   constructor() {
     super(...arguments);
     this.loadCurrentCategory();
+
+    fetch('/about.json')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.about);
+        this.short_site_description=data.about.short_description;
+        this.site_description=data.about.description;
+      });
+
+    this.categories=[];
+    this.site.categories.forEach(category => {
+      if (!category.topic_count) {
+       return; // 다음 반복으로 넘어감
+      }
+
+      this.categories.push(category);
+    });
   }
 
   async loadCurrentCategory() {
@@ -145,6 +165,16 @@ export default class PollListWidgetComponent extends Component {
  }
 
   <template>
+    <div>
+      <h1>{{this.site_description}}</h1>
+      <p>{{this.short_site_description}}</p>
+    </div>
+  {{#if this.categories.length}}
+    {{#each this.categories as |category index|}}
+      {{category.name}}
+    {{/each}}
+  {{/if}}
+
     {{#if this.showInFrontend}}
       <div class="poll-widget-main" {{didInsert this.fetchPolls}}>
         <h1 class="cv-title">
@@ -161,8 +191,7 @@ export default class PollListWidgetComponent extends Component {
         <a href="{{this.currentCategory.url}}">
           {{this.currentCategory.name}} {{i18n "poll.admin.more"}}
         </a><br>
-        <a href="{{@siteURL}}/leaderboard/1?category={{this.categoryId}}">{{this.currentCategory.name}} {{i18n "poll.admin.leaderboard"}}
-        </a>
+        <a href="{{@siteURL}}/leaderboard/1?category={{this.categoryId}}">{{this.currentCategory.name}} {{i18n "poll.admin.leaderboard"}}</a>
         </div>
         <section>
           {{#if this.polls.length}}

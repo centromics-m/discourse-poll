@@ -64,8 +64,6 @@ export default class PollListItemWidgetComponent extends Component {
   }
 
   async buildPollAttrs(poll, post, vote) {
-    console.log("buildPollAttr", poll, post);
-
     const pollGroupableUserFields = this.siteSettings.groupable_user_fields;
     const pollName = poll.name;
     const pollObj = EmberObject.create(poll);
@@ -77,8 +75,6 @@ export default class PollListItemWidgetComponent extends Component {
     //if(!pollPost) {
       pollPost = await this.postForPoll(poll);
     //}
-
-    console.log('buildPollAttr pollPost', pollPost);
 
     if(!vote) {
       const polls_votes = pollPost.get('polls_votes') || {};
