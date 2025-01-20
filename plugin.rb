@@ -59,6 +59,7 @@ after_initialize do
     put "/toggle_status" => "polls#toggle_status"
     get "/voters" => "polls#voters"
     get "/grouped_poll_results" => "polls#grouped_poll_results"
+    get "/poll_list_home" => "polls#poll_list_home"
     get "/poll_list" => "polls#poll_list"
     get "/poll_admin_list" => "polls#poll_admin_list"
     get "/poll_main" => "polls#poll_main"

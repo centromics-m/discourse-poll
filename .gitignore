@@ -3,3 +3,4 @@
 .vscode
 .editorconfig
 credentials.json
+node_modules

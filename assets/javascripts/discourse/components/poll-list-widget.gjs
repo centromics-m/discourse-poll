@@ -12,6 +12,7 @@ import Category from "discourse/models/category";
 import PollListItemWidget from "./poll-list-item-widget"
 import PollListTab from "./poll-list-tab";
 
+
 const dateOptions = {
   year: "numeric",
   month: "short",
@@ -21,9 +22,11 @@ const dateOptions = {
 export default class PollListWidgetComponent extends Component {
   //@tracked poll;
   @tracked polls = [];
+  @tracked hotPolls = [];
   @tracked inFrontpage = false;
   @service router;
   @service pollsService;
+  @service pollsHotService;
   @service siteSettings;
   @tracked categoryId = this.pollsService.category;
   @tracked currentCategory = null;
@@ -38,17 +41,16 @@ export default class PollListWidgetComponent extends Component {
     fetch('/about.json')
       .then(response => response.json())
       .then(data => {
-        console.log(data.about);
-        this.short_site_description=data.about.short_description;
         this.site_description=data.about.description;
       });
 
     this.categories=[];
     this.site.categories.forEach(category => {
       if (!category.topic_count) {
-       return; // 다음 반복으로 넘어감
+        return; // 다음 반복으로 넘어감
       }
 
+      console.log(category);
       this.categories.push(category);
     });
   }
@@ -62,8 +64,27 @@ export default class PollListWidgetComponent extends Component {
     return this.pollsService.polls;
   }
 
+  get getHotPolls() {
+    return this.pollsHotService.polls;
+  }
+
   @action
   fetchPolls(element) {
+    this.getHotPolls.then((result) => {
+      let polls = result.polls.filter((poll) => poll.public === true);
+      // polls = polls.map((poll) => {
+      //   return {
+      //     ...poll,
+      //     post_topic_title_truncated: this.truncateString(poll.post_topic_title, 45),
+      //   };
+      // });
+      // if (polls.length > 0) {
+      //   this.poll = polls[0];
+      // }
+      this.hotPolls = polls;
+      console.log("Fetched polls:", polls[0]);
+    });
+
     this.getPolls.then((result) => {
       let polls = result.polls.filter((poll) => poll.public === true);
       // polls = polls.map((poll) => {
@@ -165,35 +186,68 @@ export default class PollListWidgetComponent extends Component {
  }
 
   <template>
-    <div>
-      <h1>{{this.site_description}}</h1>
-      <p>{{this.short_site_description}}</p>
-    </div>
-  {{#if this.categories.length}}
-    {{#each this.categories as |category index|}}
-      {{category.name}}
-    {{/each}}
-  {{/if}}
-
     {{#if this.showInFrontend}}
       <div class="poll-widget-main" {{didInsert this.fetchPolls}}>
-        <h1 class="cv-title">
-          <span class="black white-text">
-            <CategoryChooser
-              @value={{this.categoryId}}
-              @onChange={{this.changeCategory}}
-              class="leaderboard__period-chooser"
-            />
-          </span>
-        </h1>
-
-        <div class="poll-category-more">
-        <a href="{{this.currentCategory.url}}">
-          {{this.currentCategory.name}} {{i18n "poll.admin.more"}}
-        </a><br>
-        <a href="{{@siteURL}}/leaderboard/1?category={{this.categoryId}}">{{this.currentCategory.name}} {{i18n "poll.admin.leaderboard"}}</a>
-        </div>
         <section>
+          <h1>{{this.siteSettings.title}}</h1>
+          <p>{{this.site_description}}</p>
+        </section>
+
+
+        <!-- Slider main container -->
+          <section id="main-hot-polls" class="swiper">
+            <h2><span>quiz</span> in progress</h2>
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper">
+            {{#if this.hotPolls.length}}
+              <!-- Slides -->
+              {{#each this.hotPolls as |poll index|}}
+                <article class="swiper-slide">
+                  <h3>{{poll.post_topic_title}}</h3>
+                  <div>
+                    {{{poll.post_topic_overview}}}
+                  </div>
+                  <a href="{{poll.post_url}}">Vote</a>
+                </article>
+          {{/each}}
+        {{/if}}
+          </div>
+          <!-- If we need pagination -->
+          <div class="swiper-pagination"></div>
+
+          <!-- If we need navigation buttons -->
+          <div class="swiper-button-next"></div>
+
+          <!-- If we need scrollbar -->
+          <div class="swiper-scrollbar"></div>
+        </section>
+
+        <section id="main-poll-category">
+          {{#if this.categories.length}}
+            {{#each this.categories as |category index|}}
+              <article style="background-color:#{{category.color}}">
+                <a href="{{category.url}}"> {{category.name}}</a>
+              </article>
+            {{/each}}
+          {{/if}}
+        </section>
+
+        <section id="main-polls">
+          <h1 class="cv-title">
+            <span class="black white-text">
+              <CategoryChooser
+                @value={{this.categoryId}}
+                @onChange={{this.changeCategory}}
+                class="leaderboard__period-chooser"
+              />
+            </span>
+          </h1>
+          <div class="poll-category-more">
+            <a href="{{this.currentCategory.url}}">
+              {{this.currentCategory.name}} {{i18n "poll.admin.more"}}
+            </a><br>
+            <a href="{{@siteURL}}/leaderboard/1?category={{this.categoryId}}">{{this.currentCategory.name}} {{i18n "poll.admin.leaderboard"}}</a>
+          </div>
           {{#if this.polls.length}}
             {{#each this.polls as |poll index|}}
               <article class="item">

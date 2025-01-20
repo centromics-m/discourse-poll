@@ -5,6 +5,15 @@ class DiscoursePoll::PollsController < ::ApplicationController
 
   before_action :ensure_logged_in, except: %i[voters poll_list grouped_poll_results]
 
+  def poll_list_home
+
+    # find only in non-deleted topics and same category
+    @polls = Poll.joins(:post).joins('INNER JOIN topics AS t ON posts.topic_id = t.id')
+                 .where('t.deleted_at': nil).order('id desc').limit(10)
+
+    render json: @polls, each_serializer: PollSerializer
+  end
+
   def poll_list
     if params[:category].present?
       category = params[:category]
